@@ -1,0 +1,13 @@
+version: '3.3'
+
+services:
+  cq-editor:
+    build:
+      context: ..
+      dockerfile: Dockerfile
+    environment:
+      - DISPLAY=${DISPLAY}
+#      - DISPLAY=${IP}:0
+#      - DISPLAY=${HOSTNAME}:0
+    volumes:
+      - /tmp/.X11-unix:/tmp/.X11-unix:rw
