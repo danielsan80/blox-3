@@ -1,14 +1,7 @@
 import cadquery as cq
 import blox.config as config
 
-
 def slab(points, thick):
-    wire = cq.Workplane().polyline(points).close()
-    plate = wire.extrude(thick).edges("|Z").fillet(thick).edges("|X").fillet(thick/2-config.fix)
-    return plate
-
-
-def slab3d(points, thick):
     wire = cq.Wire.makePolygon(points).close()
     face = cq.Face.makeFromWires(wire)
     origin = face.Center()

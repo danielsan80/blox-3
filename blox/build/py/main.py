@@ -5,33 +5,22 @@ import os
 from cadquery import Workplane, Sketch, Vector, Location, exporters
 from blox.dir.dirs import dirs
 from blox.dir.turn_dir import turn_right, turn_left, turn_back
-from blox.slab.slab import slab, slab3d
+from blox.slab.slab import slab
 from common.project import Project
-# from blox.config import *
-#
-#
-# print(config.fix)
-
-# result = (
-#     Workplane("front")
-#     .rect(10, 10)
-#     .extrude(10)
-# )
-#
-# slab = slab([(0, 0), (10, 0), (10, 10), (0, 10), (0,0)], 1)
-# slab = slab.rotate((0, 0, 0), (0, 1, 0), 45)
-
-# show_object(slab)
+import blox.config as config
 
 
-walls = (slab3d([(0, 0, 0), (10, 0, 0), (10, 0, 10), (0, 0, 10)], 1)
-        .add(slab3d([(0, 0, 0), (0, 10, 0), (0, 10, 10), (0, 0, 10)], 1))
+walls = (slab([(0, 0, 0), (10, 0, 0), (10, 0, 10), (0, 0, 10)], 1)
+        .add(slab([(0, 0, 0), (0, 10, 0), (0, 10, 10), (0, 0, 10)], 1))
         .clean()
     )
-# walls = walls.union(
-show_object(walls)
 
-exporters.export(walls, Project.stl_dir() + "/main.stl")
+
+result = walls
+
+show_object(result)
+exporters.export(result, Project.stl_dir() + "/main.stl")
+
 # show_object(result)
 
 
