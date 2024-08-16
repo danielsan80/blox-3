@@ -1,6 +1,8 @@
 import cadquery as cq
 import blox.config as config
 
+# Given some points on the same plane, make a slab of a given thickness
+
 def slab(points, thick):
     wire = cq.Wire.makePolygon(points).close()
     face = cq.Face.makeFromWires(wire)

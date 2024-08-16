@@ -6,7 +6,6 @@ from cadquery import Workplane, Sketch, Vector, Location, exporters
 from blox.dir.dirs import dirs
 from blox.dir.turn_dir import turn_right, turn_left, turn_back
 from blox.slab.slab import slab
-from blox.slab.blob import blob
 from common.project import Project
 import blox.config as config
 
@@ -16,14 +15,9 @@ walls = (slab([(0, 0, 0), (10, 0, 0), (10, 0, 10), (0, 0, 10)], 1)
         .clean()
     )
 
-
-
-
-block = blob([(0, 0, 0), (10, 0, 0), (10, 0, 10), (10, 10, 10)], 1)
-
-result = block
+result = walls
 show_object(result)
-exporters.export(result, Project.stl_dir() + "/main.stl")
+# exporters.export(result, Project.stl_dir() + "/main.stl")
 
 # show_object(result)
 
