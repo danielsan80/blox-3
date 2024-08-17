@@ -8,18 +8,36 @@ from blox.dir.turn_dir import turn_right, turn_left, turn_back
 from blox.slab.slab import slab
 from common.project import Project
 import blox.config as config
+import blox.block.bottom as bottom
 
 
-walls = (slab([(0, 0, 0), (10, 0, 0), (10, 0, 10), (0, 0, 10)], 1)
-        .add(slab([(0, 0, 0), (0, 10, 0), (0, 10, 10), (0, 0, 10)], 1))
+
+result = (
+        bottom.floor()
+        .add(bottom.slope("west"))
+        .add(bottom.slope("north"))
+        .add(bottom.slope("east"))
+        .add(bottom.slope("south"))
         .clean()
-    )
+)
 
-result = walls
+
+
+
+#
+# walls = (slab([(0, 0, 0), (10, 0, 0), (10, 0, 10), (0, 0, 10)], 1)
+#         .add(slab([(0, 0, 0), (0, 10, 0), (0, 10, 10), (0, 0, 10)], 1))
+#         .clean()
+#     )
+#
+# result = walls
+
+
+
+
+
+exporters.export(result, Project.stl_dir() + "/main.stl")
 show_object(result)
-# exporters.export(result, Project.stl_dir() + "/main.stl")
-
-# show_object(result)
 
 
 

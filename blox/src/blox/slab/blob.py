@@ -2,9 +2,8 @@ import cadquery as cq
 import blox.config as config
 
 # Given 4 points make a solid
-# @deprecated
 
-def blob(points, thick):
+def blob(points):
     pointsByFaces = [
         [points[0], points[1], points[2]],
         [points[0], points[2], points[3]],
