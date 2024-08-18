@@ -1,7 +1,7 @@
 import cadquery as cq
 import blox.config as c
 from blox.slab.slab import slab
-from blox.slab.hull import thickHull
+from blox.slab.hull import hull
 from blox.util.mv import mv
 
 # Given some points on the same plane, make a slab of a given thickness
@@ -50,7 +50,7 @@ def slope(dir="west"):
 
     return result
 
-def floor():
+def floor() -> cq.Solid:
     ext = c.ext
     side = c.block_side
     wall_w = c.wall_w
@@ -64,22 +64,24 @@ def floor():
 
     return result
 
-def emptyBottom():
+def emptyBottom() -> cq.Solid:
     return (
-        floor()
-        .add(slope("west"))
-        .add(slope("north"))
-        .add(slope("east"))
-        .add(slope("south"))
+        cq.Workplane()
+        .union(floor())
+        .union(slope("west"))
+        .union(slope("north"))
+        .union(slope("east"))
+        .union(slope("south"))
         .clean()
+        .findSolid()
     )
 
-def fullBottom():
+def fullBottom() -> cq.Solid:
     ext = c.ext
     side = c.block_side
     wall_w = c.wall_w
     return (
-        thickHull([
+        hull([
             mv((0, 0, 0), (1,1,1)),
             mv((0, side, 0), (1,-1,1)),
             mv((side, side, 0), (-1,-1,1)),

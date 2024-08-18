@@ -13,7 +13,7 @@ import blox.block.bottom as bottom
 
 
 result = (
-        bottom.fullBottom()
+        bottom.emptyBottom()
 )
 
 

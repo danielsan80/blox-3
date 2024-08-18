@@ -1,14 +1,9 @@
 import cadquery as cq
-import blox.config as c
-import itertools
-from typing import List, Tuple, TypeAlias
+from blox.geometry.types import PointList, Point
 
-from scipy.spatial import ConvexHull, Delaunay
+from scipy.spatial import ConvexHull
 
-Point: TypeAlias = Tuple[float, float, float]
-PointList: TypeAlias = List[Point]
-
-def hull(points: PointList) -> cq.Solid:
+def simpleHull(points: PointList) -> cq.Solid:
     hull = ConvexHull(points)
 
     simplices = hull.simplices
@@ -27,18 +22,18 @@ def hull(points: PointList) -> cq.Solid:
     return cq.Solid.makeSolid(shell).clean()
 
 
-def thickHull(points: PointList, thick: float = 0) -> cq.Solid:
+def hull(points: PointList, ext: float = 0) -> cq.Solid:
 
-    assert (thick >= 0), "thick must be greater than or equal to zero"
+    assert (ext >= 0), "ext must be greater than or equal to zero"
 
-    solid = hull(points)
+    solid = simpleHull(points)
 
-    if thick == 0:
+    if ext == 0:
         return solid
     return (
         cq.Workplane()
-        .add(solid.shell([], thick))
-        .add(solid)
+        .union(solid.shell([], ext))
+        .union(solid)
         .clean()
         .findSolid()
     )
