@@ -13,12 +13,7 @@ import blox.block.bottom as bottom
 
 
 result = (
-        bottom.floor()
-        .add(bottom.slope("west"))
-        .add(bottom.slope("north"))
-        .add(bottom.slope("east"))
-        .add(bottom.slope("south"))
-        .clean()
+        bottom.fullBottom()
 )
 
 

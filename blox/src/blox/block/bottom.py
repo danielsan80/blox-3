@@ -1,6 +1,7 @@
 import cadquery as cq
 import blox.config as c
 from blox.slab.slab import slab
+from blox.slab.blob import blob
 from blox.util.mv import mv
 
 # Given some points on the same plane, make a slab of a given thickness
@@ -30,7 +31,7 @@ def dir_rotate(workplane, dir="west", rows=1, cols=1):
                 .translate((side * cols, 0, 0))
             )
         case _:
-            raise ValueError(f"Direzione non valida: {dir}")
+            raise ValueError(f"Not valid dir: {dir}")
 
 
 def slope(dir="west"):
@@ -62,4 +63,44 @@ def floor():
     ], wall_w))
 
     return result
+
+def emptyBottom():
+    return (
+        floor()
+        .add(slope("west"))
+        .add(slope("north"))
+        .add(slope("east"))
+        .add(slope("south"))
+        .clean()
+    )
+
+def fullBottom():
+    ext = c.ext
+    side = c.block_side
+    wall_w = c.wall_w
+    return (
+#         emptyBottom()
+#         .add(slab([
+#             mv((0, 0, 0), (1,1,1)),
+#             mv((0, side, 0), (1,-1,1)),
+#             mv((side, side, 0), (-1,-1,1)),
+#             mv((side, 0, 0), (-1,1,1)),
+#         ], wall_w))
+        blob([
+            (0, 0, 0),
+            (10, 0, 0),
+            (0, 10, 0),
+            (0, 0, 10),
+            (10, 10, 10),
+
+#             mv((0, 0, 0), (1,1,1)),
+#             mv((0, side, 0), (1,-1,1)),
+#             mv((side, side, 0), (-1,-1,1)),
+#             mv((side, 0, 0), (-1,1,1)),
+#             mv((ext, ext, -ext), (1,1,1)),
+#             mv((ext, side-ext, -ext), (1,-1,1)),
+#             mv((side-ext, side-ext, -ext), (-1,-1,1)),
+#             mv((side-ext, ext, -ext), (-1,1,1)),
+        ])
+    )
 
