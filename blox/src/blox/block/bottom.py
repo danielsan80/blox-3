@@ -1,7 +1,7 @@
 import cadquery as cq
 import blox.config as c
 from blox.slab.slab import slab
-from blox.slab.blob import blob
+from blox.slab.hull import thickHull
 from blox.util.mv import mv
 
 # Given some points on the same plane, make a slab of a given thickness
