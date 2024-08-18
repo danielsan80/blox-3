@@ -79,7 +79,7 @@ def fullBottom():
     side = c.block_side
     wall_w = c.wall_w
     return (
-        blob([
+        thickHull([
             mv((0, 0, 0), (1,1,1)),
             mv((0, side, 0), (1,-1,1)),
             mv((side, side, 0), (-1,-1,1)),
@@ -88,6 +88,6 @@ def fullBottom():
             mv((ext, side-ext, -ext), (1,-1,1)),
             mv((side-ext, side-ext, -ext), (-1,-1,1)),
             mv((side-ext, ext, -ext), (-1,1,1)),
-        ])
+        ], wall_w/2)
     )
 
