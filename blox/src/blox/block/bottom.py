@@ -79,28 +79,15 @@ def fullBottom():
     side = c.block_side
     wall_w = c.wall_w
     return (
-#         emptyBottom()
-#         .add(slab([
-#             mv((0, 0, 0), (1,1,1)),
-#             mv((0, side, 0), (1,-1,1)),
-#             mv((side, side, 0), (-1,-1,1)),
-#             mv((side, 0, 0), (-1,1,1)),
-#         ], wall_w))
         blob([
-            (0, 0, 0),
-            (10, 0, 0),
-            (0, 10, 0),
-            (0, 0, 10),
-            (10, 10, 10),
-
-#             mv((0, 0, 0), (1,1,1)),
-#             mv((0, side, 0), (1,-1,1)),
-#             mv((side, side, 0), (-1,-1,1)),
-#             mv((side, 0, 0), (-1,1,1)),
-#             mv((ext, ext, -ext), (1,1,1)),
-#             mv((ext, side-ext, -ext), (1,-1,1)),
-#             mv((side-ext, side-ext, -ext), (-1,-1,1)),
-#             mv((side-ext, ext, -ext), (-1,1,1)),
+            mv((0, 0, 0), (1,1,1)),
+            mv((0, side, 0), (1,-1,1)),
+            mv((side, side, 0), (-1,-1,1)),
+            mv((side, 0, 0), (-1,1,1)),
+            mv((ext, ext, -ext), (1,1,1)),
+            mv((ext, side-ext, -ext), (1,-1,1)),
+            mv((side-ext, side-ext, -ext), (-1,-1,1)),
+            mv((side-ext, ext, -ext), (-1,1,1)),
         ])
     )
 

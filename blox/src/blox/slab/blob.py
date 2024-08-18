@@ -1,10 +1,19 @@
 import cadquery as cq
-import blox.config as config
+import blox.config as c
 import itertools
 import logging
 
+from scipy.spatial import ConvexHull, Delaunay
+import numpy as np
 
 log = logging.getLogger(__name__)
+
+def is_point_inside_hull(point, points):
+    hull = ConvexHull(points)
+    delaunay = Delaunay(hull.points[hull.vertices])
+    return delaunay.find_simplex(point) >= 0
+
+
 
 
 def are_points_coplanar(points, tolerance=1e-6):
@@ -67,10 +76,19 @@ def expand_solid_with_point(solid, point):
 
     allFaces = solid.Faces() + newFaces
 
-    log.info(allFaces)
-    shell = cq.Shell.makeShell(newFaces)
+    newPoints = oldPoints.copy()
+    newPoints.append(point)
 
-    return solid.append(cq.Solid.makeSolid(shell))
+
+    for face in allFaces:
+        centroid = face.Center()
+        if is_point_inside_hull(centroid.toTuple(), newPoints):
+            allFaces.remove(face)
+
+
+    log.info(len(allFaces))
+    shell = cq.Shell.makeShell(allFaces)
+    return cq.Solid.makeSolid(shell)
 
 
 #                 if isPointInsideSolid(solid, centroid):
@@ -147,7 +165,30 @@ def isPointInsideSolid(solid, point):
 
 def blob(points):
 
+    hull = ConvexHull(points)
+
+    simplices = hull.simplices
+
+    faces = []
+
+    for s in simplices:
+        wire = cq.Wire.makePolygon([
+            points[s[0]],
+            points[s[1]],
+            points[s[2]],
+        ]).close()
+        faces.append(cq.Face.makeFromWires(wire))
+
+    shell = cq.Shell.makeShell(faces)
+    return cq.Solid.makeSolid(shell).clean().shell([], c.wall_w/2).clean()
+
+    log.info(faces)
+
+
     return create_convex_hull(points)
+
+
+
 #
 #     sets = list(itertools.combinations(points, 3))
 #
