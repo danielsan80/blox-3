@@ -3,8 +3,7 @@ import blox.config as c
 from blox.box.features.bottom import boxBottom
 from blox.box.features.wall import boxWall
 from blox.box.features.wallBorder import boxWallBorder
-
-# Given some points on the same plane, make a slab of a given thickness
+from blox.box.features.label import boxLabel
 
 def box(
         rows: int = c.box_rows,
@@ -28,6 +27,8 @@ def box(
         boxWallBorder("east", rows, cols, h),
     ]
 
+    label = boxLabel(wall_l = cols, wall_h = h, l = 2, w = 1)
+
     result = (
         cq.Workplane()
         .union(bottom)
@@ -38,6 +39,8 @@ def box(
 
     for wallBorder in wallBorders:
         result = result.union(wallBorder).clean()
+
+    result = result.union(label).clean()
 
     return (
         result
