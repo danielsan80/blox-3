@@ -1,0 +1,4 @@
+#!/usr/bin/env bash
+
+mypy --namespace-packages --ignore-missing-imports --strict src
+

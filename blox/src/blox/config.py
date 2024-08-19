@@ -11,5 +11,10 @@ mv_step = play + wall_w/2
 block_side = 10
 ext = 1.5
 
+box_rows = 4
+box_cols = 5
+box_h = 2
 
+box_l = box_rows
 
+box_h_fix = 0.05

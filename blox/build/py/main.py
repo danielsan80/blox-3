@@ -9,11 +9,12 @@ from blox.slab.slab import slab
 from common.project import Project
 import blox.config as config
 import blox.block.bottom as bottom
+from blox.box.box import box
 
 
 
 result = (
-        bottom.emptyBottom()
+    box()
 )
 
 

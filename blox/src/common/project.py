@@ -2,22 +2,19 @@ import os
 
 class Project:
 
-    def project_dir():
+    @staticmethod
+    def project_dir() -> str:
         current_dir = os.getcwd()
         while not os.path.exists(os.path.join(current_dir, '.project_root')):
             current_dir = os.path.dirname(current_dir)
             if current_dir == '/':
-                return None
+                raise Exception('Could not find project root')
         return current_dir
 
-    def build_dir():
-        if Project.project_dir() is None:
-            return None
-        else:
-            return os.path.join(Project.project_dir(), 'build')
+    @staticmethod
+    def build_dir() -> str:
+        return os.path.join(Project.project_dir(), 'build')
 
-    def stl_dir():
-        if Project.build_dir() is None:
-            return None
-        else:
-            return os.path.join(Project.build_dir(), 'stl')
+    @staticmethod
+    def stl_dir() -> str:
+        return os.path.join(Project.build_dir(), 'stl')
