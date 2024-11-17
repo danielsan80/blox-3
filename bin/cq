@@ -1,0 +1,14 @@
+#!/bin/bash
+
+source $HOME/mambaforge/bin/activate
+
+conda activate cq
+
+pip show cqkit  > /dev/null 2>&1 || pip install cqkit
+
+pip show cqgridfinity > /dev/null 2>&1 || pip install cqgridfinity
+
+pip show pytest > /dev/null 2>&1 || pip install pytest
+
+cq-editor
+
