@@ -1,0 +1,14 @@
+name: cadquery-env
+channels:
+  - cadquery
+  - conda-forge
+dependencies:
+  - python=3.10
+  - cadquery=2.2
+  - numpy>=1.21,<1.26
+  - scipy>=1.7,<2.0
+  - pip
+  - pip:
+      - cqgridfinity
+      - cqkit
+      - pytest

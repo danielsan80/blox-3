@@ -1,0 +1,30 @@
+version: '3'
+
+services:
+
+#  code:
+#    build: docker/code
+#    tty: true # -t option in docker
+#    stdin_open: true # -i option in docker
+#    volumes:
+#      - ./blox:/app
+#    env_file:
+#      - .env
+
+  cq:
+    build: docker/cq
+    tty: true # -t option in docker
+    stdin_open: true # -i option in docker
+    volumes:
+      - ./blox:/app
+    env_file:
+      - .env
+
+#  jupyter:
+#    image: jupyter/minimal-notebook:latest
+#    ports:
+#      - "8888:8888"
+#    volumes:
+#      - .:/home/jovyan/work
+#    environment:
+#      - JUPYTER_ENABLE_LAB=yes
