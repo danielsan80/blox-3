@@ -18,8 +18,18 @@ RUN apt-get update && apt-get install -y libgl1
 
 RUN conda env create -f /tmp/environment.yml -yq
 
+RUN #jupyter labextension install @jupyter-widgets/jupyterlab-manager && \
+#    jupyter nbextension install --py jupyter_cadquery --sys-prefix && \
+#    jupyter nbextension enable --py jupyter_cadquery --sys-prefix
+
 
 #COPY . .
 
+
+
+EXPOSE 8888
+
 ENTRYPOINT ["/usr/local/bin/entrypoint.sh"]
-CMD ["bash"]
+CMD ["jupyter", "lab", "--ip=0.0.0.0", "--no-browser", "--allow-root"]
+
+#CMD ["bash"]

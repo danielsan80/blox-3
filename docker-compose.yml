@@ -17,6 +17,8 @@ services:
     stdin_open: true # -i option in docker
     volumes:
       - ./blox:/app
+    ports:
+      - "8888:8888"
     env_file:
       - .env
 

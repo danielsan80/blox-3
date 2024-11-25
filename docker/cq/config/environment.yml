@@ -7,8 +7,14 @@ dependencies:
   - cadquery=2.2
   - numpy>=1.21,<1.26
   - scipy>=1.7,<2.0
+#  - jupyter
+  - vtk=9.2.2
   - pip
   - pip:
       - cqgridfinity
       - cqkit
       - pytest
+      - jupyter-cadquery
+      - cadquery-massembly==1.0.0
+      - matplotlib
+      - jupyter_cadquery_widgets
