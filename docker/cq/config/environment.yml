@@ -1,4 +1,4 @@
-name: cadquery-env
+name: cq
 channels:
   - cadquery
   - conda-forge

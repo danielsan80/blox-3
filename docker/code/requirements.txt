@@ -1,7 +1,0 @@
-pipdeptree
-pytest
-#poetry
-cadquery
-#cadquery-ocp
-#cqkit
-#cqgridfinity

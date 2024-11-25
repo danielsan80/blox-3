@@ -1,4 +1,5 @@
-conda activate cadquery-env
+
+conda activate cq
 
 #if [ -f ~/.bash_aliases ]; then
 #    . ~/.bash_aliases

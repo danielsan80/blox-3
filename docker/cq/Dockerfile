@@ -20,7 +20,6 @@ USER user
 
 RUN mkdir $HOME/history && touch $HOME/history/.bash_history
 COPY bash/.bashrc-footer /tmp/.bashrc-footer
-# Aggiungi il contenuto al file di destinazione
 RUN cat /tmp/.bashrc-footer >> $HOME/.bashrc
 COPY bash/.bash_aliases $HOME/.bash_aliases
 
@@ -28,7 +27,6 @@ USER root
 
 RUN mkdir /root/history && touch /root/history/.bash_history
 COPY bash/.bashrc-footer /tmp/.bashrc-footer
-# Aggiungi il contenuto al file di destinazione
 RUN cat /tmp/.bashrc-footer >> /root/.bashrc
 COPY bash/.bash_aliases /root/.bash_aliases
 
@@ -45,6 +43,6 @@ RUN conda env create --file /tmp/environment.yml -yq
 #COPY . .
 
 
-#ENTRYPOINT ["/usr/local/bin/entrypoint.sh"]
-CMD ["/opt/conda/envs/cadquery-env/bin/cq-editor"]
+ENTRYPOINT ["/usr/local/bin/entrypoint.sh"]
+CMD ["/opt/conda/envs/cq/bin/cq-editor"]
 #CMD ["bash"]

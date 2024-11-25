@@ -5,35 +5,15 @@ volumes:
 
 services:
 
-#  code:
-#    build: docker/code
-#    tty: true # -t option in docker
-#    stdin_open: true # -i option in docker
-#    volumes:
-#      - ./blox:/app
-#    env_file:
-#      - .env
-
   cq:
     build: docker/cq
     tty: true # -t option in docker
     stdin_open: true # -i option in docker
     environment:
       - DISPLAY=$DISPLAY
+    env_file:
+      - .env
     volumes:
       - ./blox:/app
       - history_volume:/home/user/history
       - /tmp/.X11-unix:/tmp/.X11-unix:rw
-#    ports:
-#      - "8888:8888"
-#    env_file:
-#      - .env
-
-#  jupyter:
-#    image: jupyter/minimal-notebook:latest
-#    ports:
-#      - "8888:8888"
-#    volumes:
-#      - .:/home/jovyan/work
-#    environment:
-#      - JUPYTER_ENABLE_LAB=yes
