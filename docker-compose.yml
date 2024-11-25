@@ -1,5 +1,8 @@
 version: '3'
 
+volumes:
+  history_volume: {}
+
 services:
 
 #  code:
@@ -15,12 +18,16 @@ services:
     build: docker/cq
     tty: true # -t option in docker
     stdin_open: true # -i option in docker
+    environment:
+      - DISPLAY=$DISPLAY
     volumes:
       - ./blox:/app
-    ports:
-      - "8888:8888"
-    env_file:
-      - .env
+      - history_volume:/home/user/history
+      - /tmp/.X11-unix:/tmp/.X11-unix:rw
+#    ports:
+#      - "8888:8888"
+#    env_file:
+#      - .env
 
 #  jupyter:
 #    image: jupyter/minimal-notebook:latest

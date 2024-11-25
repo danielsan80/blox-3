@@ -4,4 +4,5 @@ if [ ! -e .env ]; then
     cp .env.dist .env
 fi
 
+xhost +local:root
 docker-compose up "$@"

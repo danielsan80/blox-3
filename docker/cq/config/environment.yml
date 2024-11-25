@@ -3,18 +3,16 @@ channels:
   - cadquery
   - conda-forge
 dependencies:
-  - python=3.10
-  - cadquery=2.2
-  - numpy>=1.21,<1.26
-  - scipy>=1.7,<2.0
-#  - jupyter
-  - vtk=9.2.2
-  - pip
+  - python>=3.11.8
+  - cadquery=master
+  - numpy
+  - scipy
+  - path=16.10
+  - cq-editor=nightly
+  - ocp>=7.7
+  - vtk>=9.2
+  - pip>=24.3.1
   - pip:
-      - cqgridfinity
-      - cqkit
-      - pytest
-      - jupyter-cadquery
-      - cadquery-massembly==1.0.0
-      - matplotlib
-      - jupyter_cadquery_widgets
+    - cqgridfinity>=0.5
+    - cqkit>=0.5
+    - pytest>=8.3

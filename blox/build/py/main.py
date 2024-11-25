@@ -10,8 +10,6 @@ from common.project import Project
 import blox.config as config
 import blox.block.bottom as bottom
 from blox.box.box import box
-from jupyter_cadquery import show, set_defaults
-
 
 
 result = (
@@ -35,7 +33,7 @@ result = (
 
 exporters.export(result, Project.stl_dir() + "/main.stl")
 
-show(result)
+show_object(result)
 
 
 
