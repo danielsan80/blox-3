@@ -11,9 +11,9 @@ services:
     stdin_open: true # -i option in docker
     environment:
       - DISPLAY=$DISPLAY
-    env_file:
-      - .env
     volumes:
       - ./blox:/app
       - history_volume:/home/user/history
       - /tmp/.X11-unix:/tmp/.X11-unix:rw
+#    env_file:
+#      - .env

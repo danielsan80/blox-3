@@ -8,3 +8,5 @@ class TileArea:
 
     def __init__(self, coords: List[TileCoord]):
         self.coords = coords
+        for i in range(len(coords)):
+            print(f"Elemento {i}: {fruits[i]}")
