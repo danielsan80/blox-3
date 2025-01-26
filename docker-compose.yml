@@ -12,7 +12,8 @@ services:
     environment:
       - DISPLAY=$DISPLAY
     volumes:
-      - ./blox:/app
+#      - ./blox:/app
+      - ./triblox:/app
       - history_volume:/home/user/history
       - /tmp/.X11-unix:/tmp/.X11-unix:rw
 #    env_file:
