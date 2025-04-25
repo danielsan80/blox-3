@@ -34,5 +34,3 @@ def test_coords_x():
         resolvedCoord = resolveCoord(coord)
         assert resolvedCoords[i] == resolvedCoord
 
-
-
