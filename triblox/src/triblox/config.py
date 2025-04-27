@@ -4,4 +4,6 @@ layer_h = 0.15
 layer_w = 0.46
 
 side = 10
+h = 10
+clr = 0.15
 
