@@ -3,22 +3,22 @@ sys.path.append('src/')
 
 from triblox.config import side
 
-from triblox.tale.Tale import Tale
-from triblox.tale.Direction import Direction
+from triblox.tile.Tile import Tile
+from triblox.tile.Direction import Direction
 from triblox.point.Point import Point
 from triblox.helper.util import sin60
 
-def test_Tale_coordinates_system():
-    tales = [
-        Tale(0, 0),
-        Tale(1, 0),
-        Tale(-1, 0),
-        Tale(1, 1),
-        Tale(0, 1),
-        Tale(-1, 1),
+def test_Tile_coordinates_system():
+    tiles = [
+        Tile(0, 0),
+        Tile(1, 0),
+        Tile(-1, 0),
+        Tile(1, 1),
+        Tile(0, 1),
+        Tile(-1, 1),
 
-        Tale(100, 100),
-        Tale(101, 100),
+        Tile(100, 100),
+        Tile(101, 100),
     ]
 
     expectedData = [
@@ -33,7 +33,7 @@ def test_Tale_coordinates_system():
         (Direction.down(), Point(51.5*side,sin60*101*side), Point(50.5*side,sin60*101*side), Point(51*side,sin60*100*side), Point(51*side,side*sin60*302/3)),
     ]
 
-    for i, tale in enumerate(tales):
-        data = (tale.direction, tale.vertices.a, tale.vertices.b, tale.vertices.c, tale.incenter)
+    for i, tile in enumerate(tiles):
+        data = (tile.direction, tile.vertices.a, tile.vertices.b, tile.vertices.c, tile.incenter)
         assert expectedData[i] == data
 

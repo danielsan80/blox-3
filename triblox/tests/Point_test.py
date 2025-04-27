@@ -3,8 +3,8 @@ sys.path.append('src/')
 
 from triblox.config import side
 
-from triblox.tale.Tale import Tale
-from triblox.tale.Direction import Direction
+from triblox.tile.Tile import Tile
+from triblox.tile.Direction import Direction
 from triblox.point.Point import Point
 from triblox.helper.util import dsin
 

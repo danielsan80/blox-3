@@ -4,11 +4,11 @@ sys.path.append('../../src/')
 from cadquery import Workplane, Sketch, Vector, Location, exporters
 from pprint import pprint
 
-from triblox.tale.Tale import Tale
+from triblox.Tile.Tile import Tile
 from triblox.config import h, clr
 
 
-tile = Tale(0,0)
+tile = Tile(0,0)
 
 
 triangle = (
