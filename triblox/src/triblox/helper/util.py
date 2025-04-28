@@ -4,6 +4,7 @@ def dsin(degrees: float) -> float:
     return sin(radians(degrees))
 
 sin60 = dsin(60)
+sin30 = dsin(30)
 
 def normalize_float(value: float) -> float:
     return abs(float(value)) * (1 if value >= 0 else -1)

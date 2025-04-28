@@ -5,7 +5,7 @@ from cadquery import Workplane, Sketch, Vector, Location, exporters
 from pprint import pprint
 
 from triblox.tile.Tile import Tile
-from triblox.config import h, clr
+from triblox.config import h, clr, ext
 
 
 tile = Tile(0,0)
@@ -27,14 +27,18 @@ base = (
     ])
 )
 
-result = (
-    cq.Workplane("XY")
-    .placeSketch(triangle)
-    .extrude(1)
-    .moveTo(0,0)
-    .placeSketch(base)
-    .extrude(h)
-    .clean()
+base_ext = (
+    cq.Sketch().polygon([
+        tile.vertices.a.move(tile.incenter, clr*2+ext*2).toTuple(),
+        tile.vertices.b.move(tile.incenter, clr*2+ext*2).toTuple(),
+        tile.vertices.c.move(tile.incenter, clr*2+ext*2).toTuple(),
+    ])
 )
+
+wp1 = cq.Workplane("XY").placeSketch(base)
+
+wp2 = cq.Workplane("XY").transformed(offset=(0, 0, -ext)).placeSketch(base_ext)
+
+result = wp1.add(wp2).loft(combine=True)
 
 show_object(result)

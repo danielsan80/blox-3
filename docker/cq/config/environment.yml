@@ -9,6 +9,7 @@ dependencies:
   - scipy
   - path=16.10
   - cq-editor=nightly
+  - autoflake
   - ocp>=7.7
   - vtk>=9.2
   - pip>=24.3.1
