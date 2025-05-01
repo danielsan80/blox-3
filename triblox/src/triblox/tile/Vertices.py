@@ -1,8 +1,11 @@
 import sys
-sys.path.append('src/')
+
+sys.path.append("src/")
+
+from dataclasses import dataclass
 
 from triblox.point.Point import Point
-from dataclasses import dataclass
+
 
 @dataclass(frozen=True)
 class Vertices:

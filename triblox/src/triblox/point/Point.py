@@ -1,12 +1,11 @@
 import sys
-sys.path.append('src/')
+
+sys.path.append("src/")
 
 
 from dataclasses import dataclass
-from triblox.helper.util import normalize_float, hypotenuse
 
-
-
+from triblox.helper.util import hypotenuse, normalize_float
 
 
 @dataclass(frozen=True)
@@ -15,8 +14,8 @@ class Point:
     y: float
 
     def __init__(self, x: float, y: float):
-        object.__setattr__(self, 'x', normalize_float(x))
-        object.__setattr__(self, 'y', normalize_float(y))
+        object.__setattr__(self, "x", normalize_float(x))
+        object.__setattr__(self, "y", normalize_float(y))
 
     # Move to a destination point by a value in mm
     def move(self, destination: "Point", value: float) -> "Point":

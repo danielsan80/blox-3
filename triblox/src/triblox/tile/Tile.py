@@ -1,24 +1,25 @@
 import sys
-sys.path.append('src/')
 
-from math import sin
-from triblox.config import side
-from triblox.point.Point import Point
-from triblox.tile.Direction import Direction
-from triblox.tile.Vertices import Vertices
-from triblox.tile.Coord import Coord
-from triblox.helper.util import sin60
+sys.path.append("src/")
 
 from dataclasses import dataclass
-from typing import Tuple
+
+from triblox.config import side
+from triblox.helper.util import sin60
+from triblox.point.Point import Point
+from triblox.tile.Coord import Coord
+from triblox.tile.Direction import Direction
+from triblox.tile.Vertices import Vertices
+from triblox.tile.AdjacentCoords import AdjacentCoords
+
+
+from typing import Dict
+
 
 @dataclass(frozen=True)
 class Tile:
     x: int
     y: int
-
-    def __post_init__(self):
-        self.coord
 
     @property
     def coord(self) -> Coord:
@@ -37,7 +38,6 @@ class Tile:
             a = Point(self.x / 2 * side, self.y * sin60 * side)
             b = Point(a.x + side, a.y)
             c = Point(a.x + side / 2, (self.y + 1) * sin60 * side)
-
         elif self.direction.isDown():
             a = Point((0.5 + (self.x + 1) / 2) * side, (self.y + 1) * sin60 * side)
             b = Point(a.x - side, a.y)
@@ -52,6 +52,29 @@ class Tile:
         vertices = self.vertices
         return Point(
             (vertices.a.x + vertices.b.x + vertices.c.x) / 3,
-            (vertices.a.y + vertices.b.y + vertices.c.y) / 3
+            (vertices.a.y + vertices.b.y + vertices.c.y) / 3,
         )
 
+    @property
+    def adjacentCoords(self) -> AdjacentCoords:
+        if self.direction.isUp():
+            asdf = Tile(0, 0)
+            ab = Coord(self.x, self.y - 1)
+            bc = Coord(self.x + 1, self.y)
+            ca = Coord(self.x - 1, self.y)
+        elif self.direction.isDown():
+            ab = Coord(self.x, self.y + 1)
+            bc = Coord(self.x - 1, self.y)
+            ca = Coord(self.x + 1, self.y)
+        else:
+            raise ValueError("This should never happen")
+        return AdjacentCoords(ab, bc, ca)
+
+    def isAdjacent(self, tile: "Tile") -> bool:
+        if tile.coord == self.adjacentCoords.ab:
+            return True
+        if tile.coord == self.adjacentCoords.bc:
+            return True
+        if tile.coord == self.adjacentCoords.ca:
+            return True
+        return False

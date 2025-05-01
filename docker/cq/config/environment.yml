@@ -3,13 +3,15 @@ channels:
   - cadquery
   - conda-forge
 dependencies:
-  - python>=3.11.8
+  - python==3.11.8
   - cadquery=master
   - numpy
   - scipy
-  - path=16.10
-  - cq-editor=nightly
+  - cq-editor=master
   - autoflake
+  - black
+  - isort
+  - qtawesome
   - ocp>=7.7
   - vtk>=9.2
   - pip>=24.3.1

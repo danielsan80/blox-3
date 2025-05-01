@@ -9,4 +9,3 @@ h_fix = 0.4
 ext = 1.5
 wall_w = 0.6
 clr = 0.15
-

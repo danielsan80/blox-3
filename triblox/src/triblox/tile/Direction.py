@@ -1,13 +1,15 @@
 import sys
-sys.path.append('src/')
 
-from typing import Literal
+sys.path.append("src/")
+
 from dataclasses import dataclass
 from enum import Enum
+
 
 class DirectionValue(Enum):
     UP = "up"
     DOWN = "down"
+
 
 @dataclass(frozen=True)
 class Direction:
