@@ -24,76 +24,52 @@ class VertexHex:
     refVertexPos: VertexPos
     _tiles: Dict[VertexHexKey, Tile] = field(init=False)
 
+    def _offsets(i: int) -> [int, int]:
+        offsets = [
+            [0,0],
+            [-1,0],
+            [-1,1],
+            [0,1],
+            [1,1],
+            [1,0]
+        ]
+
+        main = offsets[i].copy()
+
+        for j in range(6):
+            offsets[j][0] -= main[0]
+            offsets[j][1] -= main[1]
+
+        offsets = offsets[i:] + offsets[:i]
+
+        return offsets
+
+
     def __post_init__(self):
-        if self.refVertexPos == VertexPos.A:
-            if self.tile.isUp():
-                tiles = {
-                    VertexHexKey.MAIN: self.tile,
-                    VertexHexKey.LEFT_NEAR: self.tile.down(),
-                    VertexHexKey.LEFT_FAR: self.tile.down().left(),
-                    VertexHexKey.RIGHT_NEAR: self.tile.left(),
-                    VertexHexKey.RIGHT_FAR: self.tile.left().left(),
-                    VertexHexKey.OPPOSITE: self.tile.left().left().down()
-                }
-                object.__setattr__(self, "_tiles", tiles)
-                return
-            if self.tile.isDown():
-                tiles = {
-                    VertexHexKey.MAIN: self.tile,
-                    VertexHexKey.LEFT_NEAR: self.tile.up(),
-                    VertexHexKey.LEFT_FAR: self.tile.up().right(),
-                    VertexHexKey.RIGHT_NEAR: self.tile.right(),
-                    VertexHexKey.RIGHT_FAR: self.tile.right().right(),
-                    VertexHexKey.OPPOSITE: self.tile.right().right().up()
-                }
-                object.__setattr__(self, "_tiles", tiles)
-                return
-        if self.refVertexPos == VertexPos.B:
-            if self.tile.isUp():
-                tiles = {
-                    VertexHexKey.MAIN: self.tile,
-                    VertexHexKey.LEFT_NEAR: self.tile.right(),
-                    VertexHexKey.LEFT_FAR: self.tile.right().right(),
-                    VertexHexKey.RIGHT_NEAR: self.tile.down(),
-                    VertexHexKey.RIGHT_FAR: self.tile.down().right(),
-                    VertexHexKey.OPPOSITE: self.tile.down().right().right()
-                }
-                object.__setattr__(self, "_tiles", tiles)
-                return
-            if self.tile.isDown():
-                tiles = {
-                    VertexHexKey.MAIN: self.tile,
-                    VertexHexKey.LEFT_NEAR: self.tile.left(),
-                    VertexHexKey.LEFT_FAR: self.tile.left().left(),
-                    VertexHexKey.RIGHT_NEAR: self.tile.up(),
-                    VertexHexKey.RIGHT_FAR: self.tile.up().left(),
-                    VertexHexKey.OPPOSITE: self.tile.up().left().left()
-                }
-                object.__setattr__(self, "_tiles", tiles)
-                return
-        if self.refVertexPos == VertexPos.C:
-            if self.tile.isUp():
-                tiles = {
-                    VertexHexKey.MAIN: self.tile,
-                    VertexHexKey.LEFT_NEAR: self.tile.left(),
-                    VertexHexKey.LEFT_FAR: self.tile.left().up(),
-                    VertexHexKey.RIGHT_NEAR: self.tile.right(),
-                    VertexHexKey.RIGHT_FAR: self.tile.right().up(),
-                    VertexHexKey.OPPOSITE: self.tile.up()
-                }
-                object.__setattr__(self, "_tiles", tiles)
-                return
-            if self.tile.isDown():
-                tiles = {
-                    VertexHexKey.MAIN: self.tile,
-                    VertexHexKey.LEFT_NEAR: self.tile.right(),
-                    VertexHexKey.LEFT_FAR: self.tile.right().down(),
-                    VertexHexKey.RIGHT_NEAR: self.tile.left(),
-                    VertexHexKey.RIGHT_FAR: self.tile.left().down(),
-                    VertexHexKey.OPPOSITE: self.tile.down()
-                }
-                object.__setattr__(self, "_tiles", tiles)
-                return
+
+        if self.tile.isUp() and self.refVertexPos == VertexPos.C:
+            offset = VertexHex._offsets(0)
+        if self.tile.isDown() and self.refVertexPos == VertexPos.A:
+            offset = VertexHex._offsets(1)
+        if self.tile.isUp() and self.refVertexPos == VertexPos.B:
+            offset = VertexHex._offsets(2)
+        if self.tile.isDown() and self.refVertexPos == VertexPos.C:
+            offset = VertexHex._offsets(3)
+        if self.tile.isUp() and self.refVertexPos == VertexPos.A:
+            offset = VertexHex._offsets(4)
+        if self.tile.isDown() and self.refVertexPos == VertexPos.B:
+            offset = VertexHex._offsets(5)
+
+        tiles = {
+            VertexHexKey.MAIN: self.tile.move(offset[0][0], offset[0][1]),
+            VertexHexKey.LEFT_NEAR: self.tile.move(offset[1][0], offset[1][1]),
+            VertexHexKey.LEFT_FAR: self.tile.move(offset[2][0], offset[2][1]),
+            VertexHexKey.OPPOSITE: self.tile.move(offset[3][0], offset[3][1]),
+            VertexHexKey.RIGHT_FAR: self.tile.move(offset[4][0], offset[4][1]),
+            VertexHexKey.RIGHT_NEAR: self.tile.move(offset[5][0], offset[5][1]),
+        }
+        object.__setattr__(self, "_tiles", tiles)
+
 
     @property
     def main(self) -> Tile:

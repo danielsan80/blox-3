@@ -98,3 +98,6 @@ class Tile:
 
     def right(self) -> "Tile":
         return Tile(self.x + 1, self.y)
+
+    def move(self, x: int, y: int) -> "Tile":
+        return Tile(self.x + x, self.y + y)
