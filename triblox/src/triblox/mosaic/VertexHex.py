@@ -40,17 +40,17 @@ class VertexHex:
 
     def __post_init__(self):
 
-        if self.tile.isUp() and self.refVertexPos == VertexPos.C:
+        if self.tile.direction.isUp() and self.refVertexPos == VertexPos.C:
             offset = VertexHex._offsets(0)
-        if self.tile.isDown() and self.refVertexPos == VertexPos.A:
+        if self.tile.direction.isDown() and self.refVertexPos == VertexPos.A:
             offset = VertexHex._offsets(1)
-        if self.tile.isUp() and self.refVertexPos == VertexPos.B:
+        if self.tile.direction.isUp() and self.refVertexPos == VertexPos.B:
             offset = VertexHex._offsets(2)
-        if self.tile.isDown() and self.refVertexPos == VertexPos.C:
+        if self.tile.direction.isDown() and self.refVertexPos == VertexPos.C:
             offset = VertexHex._offsets(3)
-        if self.tile.isUp() and self.refVertexPos == VertexPos.A:
+        if self.tile.direction.isUp() and self.refVertexPos == VertexPos.A:
             offset = VertexHex._offsets(4)
-        if self.tile.isDown() and self.refVertexPos == VertexPos.B:
+        if self.tile.direction.isDown() and self.refVertexPos == VertexPos.B:
             offset = VertexHex._offsets(5)
 
         tiles = {

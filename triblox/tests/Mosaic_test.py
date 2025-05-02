@@ -6,7 +6,7 @@ import re
 
 from triblox.config import side
 from triblox.tile.Tile import Tile
-from triblox.tile.Mosaic import Mosaic
+from triblox.mosaic.Mosaic import Mosaic
 from triblox.tile.Direction import Direction
 from triblox.point.Point import Point
 from triblox.helper.util import sin60

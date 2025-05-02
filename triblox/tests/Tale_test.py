@@ -7,7 +7,7 @@ from triblox.tile.Tile import Tile
 from triblox.tile.Direction import Direction
 from triblox.point.Point import Point
 from triblox.helper.util import sin60
-from triblox.tile.AdjacentCoords import AdjacentCoords
+from triblox.tile.Tile import AdjacentTiles
 from triblox.tile.Coord import Coord
 import pytest
 import re
@@ -43,8 +43,8 @@ def test_Tile_coordinates_system():
 
 
 def test_Tile_adjacency():
-    assert Tile(0, 0).adjacentTiles == AdjacentCoords(Coord(0, -1), Coord(1, 0), Coord(-1, 0))
-    assert Tile(1, 0).adjacentTiles == AdjacentCoords(Coord(1, 1), Coord(0, 0), Coord(2, 0))
+    assert Tile(0, 0).adjacentTiles == AdjacentTiles(Tile(0, -1), Tile(1, 0), Tile(-1, 0))
+    assert Tile(1, 0).adjacentTiles == AdjacentTiles(Tile(1, 1), Tile(0, 0), Tile(2, 0))
 
     assert Tile(0,0).isAdjacent(Tile(0, -1))
     assert not Tile(0,0).isAdjacent(Tile(2, 0))
