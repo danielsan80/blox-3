@@ -29,7 +29,14 @@ class Mosaic:
         return str(tile.coord) in self.tiles
 
     def isAdjacent(self, tile: Tile) -> bool:
+        if self.isEmpty():
+            raise ValueError("The mosaic is empty")
+
+        if self.contains(tile):
+            raise ValueError(f"The tile {tile} is already in the mosaic")
+
         return any(existingTile.isAdjacent(tile) for existingTile in self.tiles.values())
 
     def isEmpty(self) -> bool:
         return len(self.tiles) == 0
+

@@ -56,7 +56,7 @@ class Tile:
         )
 
     @property
-    def adjacentCoords(self) -> AdjacentCoords:
+    def adjacentTiles(self) -> AdjacentCoords:
         if self.direction.isUp():
             asdf = Tile(0, 0)
             ab = Coord(self.x, self.y - 1)
@@ -71,10 +71,30 @@ class Tile:
         return AdjacentCoords(ab, bc, ca)
 
     def isAdjacent(self, tile: "Tile") -> bool:
-        if tile.coord == self.adjacentCoords.ab:
+        if tile.coord == self.coord:
+            raise ValueError("The given tile is the same")
+        if tile.coord == self.adjacentTiles.ab:
             return True
-        if tile.coord == self.adjacentCoords.bc:
+        if tile.coord == self.adjacentTiles.bc:
             return True
-        if tile.coord == self.adjacentCoords.ca:
+        if tile.coord == self.adjacentTiles.ca:
             return True
         return False
+
+    def isUp(self) -> bool:
+        return self.direction.isUp()
+
+    def isDown(self) -> bool:
+        return self.direction.isDown()
+
+    def up(self) -> "Tile":
+        return Tile(self.x, self.y + 1)
+
+    def down(self) -> "Tile":
+        return Tile(self.x, self.y - 1)
+
+    def left(self) -> "Tile":
+        return Tile(self.x - 1, self.y)
+
+    def right(self) -> "Tile":
+        return Tile(self.x + 1, self.y)
