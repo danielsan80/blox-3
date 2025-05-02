@@ -2,11 +2,11 @@ import sys
 
 sys.path.append("src/")
 
-from triblox.tile.Tile import Tile
-
 from dataclasses import dataclass, field
 from enum import Enum
 from typing import Dict
+
+from triblox.tile.Tile import Tile
 from triblox.tile.VertexPos import VertexPos
 
 
@@ -18,6 +18,7 @@ class VertexHexKey(Enum):
     RIGHT_FAR = "right_far"
     OPPOSITE = "opposite"
 
+
 @dataclass(frozen=True)
 class VertexHex:
     tile: Tile
@@ -25,14 +26,7 @@ class VertexHex:
     _tiles: Dict[VertexHexKey, Tile] = field(init=False)
 
     def _offsets(i: int) -> [int, int]:
-        offsets = [
-            [0,0],
-            [-1,0],
-            [-1,1],
-            [0,1],
-            [1,1],
-            [1,0]
-        ]
+        offsets = [[0, 0], [-1, 0], [-1, 1], [0, 1], [1, 1], [1, 0]]
 
         main = offsets[i].copy()
 
@@ -43,7 +37,6 @@ class VertexHex:
         offsets = offsets[i:] + offsets[:i]
 
         return offsets
-
 
     def __post_init__(self):
 
@@ -69,7 +62,6 @@ class VertexHex:
             VertexHexKey.RIGHT_NEAR: self.tile.move(offset[5][0], offset[5][1]),
         }
         object.__setattr__(self, "_tiles", tiles)
-
 
     @property
     def main(self) -> Tile:
