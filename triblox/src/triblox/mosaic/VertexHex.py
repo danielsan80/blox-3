@@ -3,29 +3,21 @@ import sys
 sys.path.append("src/")
 
 from dataclasses import dataclass, field
-from enum import Enum
-from typing import Dict
+from typing import Dict, Tuple
 
-from triblox.tile.Tile import Tile
+from triblox.mosaic.VertexHexKey import VertexHexKey
 from triblox.mosaic.VertexPos import VertexPos
-
-
-class VertexHexKey(Enum):
-    MAIN = "main"
-    LEFT_NEAR = "left_near"
-    LEFT_FAR = "left_far"
-    RIGHT_NEAR = "right_near"
-    RIGHT_FAR = "right_far"
-    OPPOSITE = "opposite"
+from triblox.tile.Direction import DirectionValue
+from triblox.tile.Tile import Tile
 
 
 @dataclass(frozen=True)
 class VertexHex:
     tile: Tile
-    refVertexPos: VertexPos
-    _tiles: Dict[VertexHexKey, Tile] = field(init=False)
+    vertexPos: VertexPos
+    tiles: Dict[VertexHexKey, Tile] = field(init=False)
 
-    def _offsets(i: int) -> [int, int]:
+    def _offsets(i: int) -> Tuple[Tuple[int, int], ...]:
         offsets = [[0, 0], [-1, 0], [-1, 1], [0, 1], [1, 1], [1, 0]]
 
         main = offsets[i].copy()
@@ -39,19 +31,17 @@ class VertexHex:
         return offsets
 
     def __post_init__(self):
+        map = {
+            (DirectionValue.UP, VertexPos.C): 0,
+            (DirectionValue.DOWN, VertexPos.A): 1,
+            (DirectionValue.UP, VertexPos.B): 2,
+            (DirectionValue.DOWN, VertexPos.C): 3,
+            (DirectionValue.UP, VertexPos.A): 4,
+            (DirectionValue.DOWN, VertexPos.B): 5,
+        }
 
-        if self.tile.direction.isUp() and self.refVertexPos == VertexPos.C:
-            offset = VertexHex._offsets(0)
-        if self.tile.direction.isDown() and self.refVertexPos == VertexPos.A:
-            offset = VertexHex._offsets(1)
-        if self.tile.direction.isUp() and self.refVertexPos == VertexPos.B:
-            offset = VertexHex._offsets(2)
-        if self.tile.direction.isDown() and self.refVertexPos == VertexPos.C:
-            offset = VertexHex._offsets(3)
-        if self.tile.direction.isUp() and self.refVertexPos == VertexPos.A:
-            offset = VertexHex._offsets(4)
-        if self.tile.direction.isDown() and self.refVertexPos == VertexPos.B:
-            offset = VertexHex._offsets(5)
+        i = map.get((self.tile.direction.value, self.vertexPos))
+        offset = VertexHex._offsets(i)
 
         tiles = {
             VertexHexKey.MAIN: self.tile.move(offset[0][0], offset[0][1]),
@@ -61,28 +51,29 @@ class VertexHex:
             VertexHexKey.RIGHT_FAR: self.tile.move(offset[4][0], offset[4][1]),
             VertexHexKey.RIGHT_NEAR: self.tile.move(offset[5][0], offset[5][1]),
         }
-        object.__setattr__(self, "_tiles", tiles)
+
+        object.__setattr__(self, "tiles", tiles)
 
     @property
     def main(self) -> Tile:
-        return self._tiles[VertexHexKey.MAIN]
+        return self.tiles[VertexHexKey.MAIN]
 
     @property
     def leftNear(self) -> Tile:
-        return self._tiles[VertexHexKey.LEFT_NEAR]
+        return self.tiles[VertexHexKey.LEFT_NEAR]
 
     @property
     def leftFar(self) -> Tile:
-        return self._tiles[VertexHexKey.LEFT_FAR]
+        return self.tiles[VertexHexKey.LEFT_FAR]
 
     @property
     def rightNear(self) -> Tile:
-        return self._tiles[VertexHexKey.RIGHT_NEAR]
+        return self.tiles[VertexHexKey.RIGHT_NEAR]
 
     @property
     def rightFar(self) -> Tile:
-        return self._tiles[VertexHexKey.RIGHT_FAR]
+        return self.tiles[VertexHexKey.RIGHT_FAR]
 
     @property
     def opposite(self) -> Tile:
-        return self._tiles[VertexHexKey.OPPOSITE]
+        return self.tiles[VertexHexKey.OPPOSITE]

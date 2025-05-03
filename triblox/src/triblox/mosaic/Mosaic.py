@@ -5,9 +5,12 @@ sys.path.append("src/")
 from dataclasses import dataclass, field
 from typing import Dict
 
-from triblox.tile.Tile import Tile
-from triblox.tile.Coord import Coord
 from triblox.mosaic.PlacedTile import PlacedTile
+from triblox.mosaic.PlacedVertices import PlacedVertices
+from triblox.mosaic.Vertex import Vertex
+from triblox.mosaic.VertexPos import VertexPos
+from triblox.tile.Coord import Coord
+from triblox.tile.Tile import Tile
 
 
 @dataclass(frozen=True)
@@ -50,8 +53,29 @@ class Mosaic:
         if tile is None:
             raise ValueError(f"The tile at ({x}, {y}) is not in the mosaic")
 
-        return PlacedTile(tile)
+        placedVertices = PlacedVertices(
+            self._placedVertex(tile, VertexPos.A),
+            self._placedVertex(tile, VertexPos.B),
+            self._placedVertex(tile, VertexPos.C),
+        )
+
+        placedTile = PlacedTile(tile, placedVertices)
+        return placedTile
 
     @property
     def placedTiles(self) -> Dict[str, PlacedTile]:
-        return {key: PlacedTile(tile) for key, tile in self.tiles.items()}
+        placedTiles = dict()
+        for tile in self.tiles.values():
+            placedTile = self.placedTile(tile.coord.x, tile.coord.y)
+            placedTiles[str(tile.coord)] = placedTile
+
+        return placedTiles
+
+    def _placedVertex(self, tile: Tile, vertexPos: VertexPos) -> Vertex:
+        vertex = Vertex(tile, vertexPos)
+
+        for key, tile in vertex.hex.tiles.items():
+            if self.contains(tile):
+                vertex = vertex.markPlaced(key)
+
+        return vertex

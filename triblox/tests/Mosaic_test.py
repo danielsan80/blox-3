@@ -12,9 +12,13 @@ from triblox.point.Point import Point
 from triblox.helper.util import sin60
 from triblox.tile.Coord import Coord
 from triblox.mosaic.VertexHex import VertexHex
+from triblox.mosaic.PlacedVertices import PlacedVertices
 from triblox.mosaic.VertexPos import VertexPos
-from triblox.mosaic.VertexHexes import VertexHexes
 from triblox.mosaic.PlacedTile import PlacedTile
+from triblox.mosaic.VertexOffset import VertexOffset
+from triblox.mosaic.Vertex import Vertex
+from triblox.mosaic.VertexHexKey import VertexHexKey
+
 
 
 
@@ -89,7 +93,7 @@ def test_get_VertexHex():
 
     assert len(mosaic.placedTiles) == 2
 
-    hex = mosaic.placedTile(0, 0).vertexHexes.c
+    hex = mosaic.placedTile(0, 0).vertices.c.hex
 
     assert mosaic.contains(hex.main)
     assert not mosaic.contains(hex.leftNear)
@@ -98,7 +102,7 @@ def test_get_VertexHex():
     assert not mosaic.contains(hex.rightFar)
     assert not mosaic.contains(hex.opposite)
 
-    hex = mosaic.placedTile(0, 0).vertexHexes.a
+    hex = mosaic.placedTile(0, 0).vertices.a.hex
 
     assert mosaic.contains(hex.main)
     assert not mosaic.contains(hex.leftNear)
@@ -107,7 +111,7 @@ def test_get_VertexHex():
     assert not mosaic.contains(hex.rightFar)
     assert not mosaic.contains(hex.opposite)
 
-    hex = mosaic.placedTile(0, 0).vertexHexes.b
+    hex = mosaic.placedTile(0, 0).vertices.b.hex
 
     assert mosaic.contains(hex.main)
     assert mosaic.contains(hex.leftNear)
@@ -117,26 +121,58 @@ def test_get_VertexHex():
     assert not mosaic.contains(hex.opposite)
 
 
-# def test_tile_vertice_offsets():
-#     tile = Tile(0, 0)
-#     mosaic = Mosaic().add(tile)
-#
-#     assert mosaic.placedTile(0,0).vertexOffsets.a == VertexOffset(Point(0,0), Offset.both())
-#     assert mosaic.placedTile(0,0).vertices.a = PlacedVertex(Point(0,0), Offset.both())
-#     assert mosaic.placedTile(0,0).movePoint(Vertex.a(), Offset.both(), clr) == Point(0,0)
-#
-#     placedTile = PlacedTile(tile, VertexOffsets(VertexOffset.center(), VertexOffset.center(), VertexOffset.center()))
-#     placedTiles = dict()
-#     placedTiles[str(tile.coord)] = placedTile
-#     assert mosaic.placedTiles == placedTiles
-#
-#     assert placedTile.movedVertex(Vertex.a(), clr) == Point(0,0)
-#     assert placedTile.movedVertices(clr) == [Point(0,0), Point(0,0), Point(0,0)]
-#
-#     center
-#     left
-#     right
-#     split
-#     none
-#     VertexShift
+def test_tile_vertice_offset_center():
+    clr = sin60
+    tile = Tile(0, 0)
+    mosaic = Mosaic().add(tile)
 
+    assert mosaic.placedTile(0,0).vertices.a == Vertex(tile, VertexPos.A)
+    assert mosaic.placedTile(0,0).vertices.b == Vertex(tile, VertexPos.B)
+    assert mosaic.placedTile(0,0).vertices.c == Vertex(tile, VertexPos.C)
+
+    assert mosaic.placedTile(0,0).vertices.a.movedPoints(clr) == [Point(1.5,sin60)]
+    assert mosaic.placedTile(0,0).vertices.b.movedPoints(clr) == [Point(side-1.5,sin60)]
+    assert mosaic.placedTile(0,0).vertices.c.movedPoints(clr) == [Point(side/2,side*sin60-sin60*2)]
+
+def test_tile_vertice_offset_left_and_right():
+    clr = sin60
+    tile = Tile(0, 0)
+    mosaic = Mosaic().add(tile).add(Tile(1,0))
+
+    assert mosaic.placedTile(0,0).vertices.a == Vertex(tile, VertexPos.A)
+    assert mosaic.placedTile(0,0).vertices.b == Vertex(tile, VertexPos.B).markPlaced(VertexHexKey.LEFT_NEAR)
+    assert mosaic.placedTile(0,0).vertices.c == Vertex(tile, VertexPos.C).markPlaced(VertexHexKey.RIGHT_NEAR)
+
+    assert mosaic.placedTile(0,0).vertices.a.movedPoints(clr) == [Point(1.5,sin60)]
+    assert mosaic.placedTile(0,0).vertices.b.movedPoints(clr) == [Point(side-0.5,sin60)]
+    assert mosaic.placedTile(0,0).vertices.c.movedPoints(clr) == [Point(side/2+0.5,side*sin60-sin60)]
+
+
+def test_tile_vertice_offset_left_right_and_split():
+    clr = sin60
+    tile = Tile(0, 0)
+    mosaic = Mosaic().add(tile).add(Tile(1,0)).add(Tile(-1,0)).add(Tile(-1,1)).add(Tile(0,1))
+
+    assert mosaic.placedTile(0,0).vertices.a == Vertex(tile, VertexPos.A).markPlaced(VertexHexKey.RIGHT_NEAR)
+    assert mosaic.placedTile(0,0).vertices.b == Vertex(tile, VertexPos.B).markPlaced(VertexHexKey.LEFT_NEAR)
+    assert mosaic.placedTile(0,0).vertices.c == Vertex(tile, VertexPos.C).markPlaced(VertexHexKey.RIGHT_NEAR).markPlaced(VertexHexKey.LEFT_NEAR).markPlaced(VertexHexKey.LEFT_FAR).markPlaced(VertexHexKey.OPPOSITE)
+
+    assert mosaic.placedTile(0,0).vertices.a.movedPoints(clr) == [Point(0.5,sin60)]
+    assert mosaic.placedTile(0,0).vertices.b.movedPoints(clr) == [Point(side-0.5,sin60)]
+    assert mosaic.placedTile(0,0).vertices.c.movedPoints(clr) == [
+        Point(side/2-0.5,side*sin60-sin60),
+        Point(side/2+0.5,side*sin60-sin60),
+    ]
+
+def test_tile_vertice_offset_none():
+    clr = sin60
+    tile = Tile(0, 0)
+    mosaic = Mosaic().add(tile).add(Tile(1,0)).add(Tile(-1,0)).add(Tile(-1,1)).add(Tile(0,1)).add(Tile(1,1))
+
+    assert mosaic.placedTile(0,0).vertices.a == Vertex(tile, VertexPos.A).markPlaced(VertexHexKey.RIGHT_NEAR)
+    assert mosaic.placedTile(0,0).vertices.b == Vertex(tile, VertexPos.B).markPlaced(VertexHexKey.LEFT_NEAR)
+    assert mosaic.placedTile(0,0).vertices.c == Vertex(tile, VertexPos.C).markPlaced(VertexHexKey.RIGHT_NEAR).markPlaced(VertexHexKey.LEFT_NEAR).markPlaced(VertexHexKey.LEFT_FAR).markPlaced(VertexHexKey.RIGHT_FAR).markPlaced(VertexHexKey.OPPOSITE)
+
+    assert mosaic.placedTile(0,0).vertices.a.movedPoints(clr) == [Point(0.5,sin60)]
+    assert mosaic.placedTile(0,0).vertices.b.movedPoints(clr) == [Point(side-0.5,sin60)]
+    assert mosaic.placedTile(0,0).vertices.c.movedPoints(clr) == [Point(side/2,side*sin60)]
