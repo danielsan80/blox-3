@@ -14,7 +14,7 @@ from triblox.tile.Tile import Tile
 @dataclass(frozen=True)
 class VertexHex:
     tile: Tile
-    vertexPos: VertexPos
+    vertex_pos: VertexPos
     tiles: Dict[VertexHexKey, Tile] = field(init=False)
 
     def _offsets(i: int) -> Tuple[Tuple[int, int], ...]:
@@ -40,7 +40,7 @@ class VertexHex:
             (DirectionValue.DOWN, VertexPos.B): 5,
         }
 
-        i = map.get((self.tile.direction.value, self.vertexPos))
+        i = map.get((self.tile.direction.value, self.vertex_pos))
         offset = VertexHex._offsets(i)
 
         tiles = {
@@ -59,19 +59,19 @@ class VertexHex:
         return self.tiles[VertexHexKey.MAIN]
 
     @property
-    def leftNear(self) -> Tile:
+    def left_near(self) -> Tile:
         return self.tiles[VertexHexKey.LEFT_NEAR]
 
     @property
-    def leftFar(self) -> Tile:
+    def left_far(self) -> Tile:
         return self.tiles[VertexHexKey.LEFT_FAR]
 
     @property
-    def rightNear(self) -> Tile:
+    def right_near(self) -> Tile:
         return self.tiles[VertexHexKey.RIGHT_NEAR]
 
     @property
-    def rightFar(self) -> Tile:
+    def right_far(self) -> Tile:
         return self.tiles[VertexHexKey.RIGHT_FAR]
 
     @property

@@ -47,11 +47,11 @@ def test_add_multiple_tiles():
 def test_empty_mosaic():
     mosaic = Mosaic()
 
-    assert mosaic.isEmpty() is True
+    assert mosaic.is_empty() is True
 
     mosaic = mosaic.add(Tile(0, 0))
 
-    assert mosaic.isEmpty() is False
+    assert mosaic.is_empty() is False
 
 def test_mosaic_contains_tile():
     tile = Tile(0, 0)
@@ -66,11 +66,11 @@ def test_is_adjacent():
     tile3 = Tile(2, 2)
     mosaic = Mosaic().add(Tile(0, 0))
 
-    assert mosaic.isAdjacent(Tile(1, 0)) is True
-    assert mosaic.isAdjacent(Tile(2, 2)) is False
+    assert mosaic.is_adjacent(Tile(1, 0)) is True
+    assert mosaic.is_adjacent(Tile(2, 2)) is False
 
     with pytest.raises(ValueError, match=re.escape(f"The tile {Tile(0,0)} is already in the mosaic")):
-        mosaic.isAdjacent(Tile(0, 0))
+        mosaic.is_adjacent(Tile(0, 0))
 
 
 def test_error_when_add_tile_already_in_mosaic():
@@ -91,33 +91,33 @@ def test_error_when_add_tile_not_adjacent():
 def test_get_VertexHex():
     mosaic = Mosaic().add(Tile(0, 0)).add(Tile(1, 0))
 
-    assert len(mosaic.placedTiles) == 2
+    assert len(mosaic.placed_tiles) == 2
 
-    hex = mosaic.placedTile(0, 0).vertices.c.hex
+    hex = mosaic.placed_tile(0, 0).vertices.c.hex
 
     assert mosaic.contains(hex.main)
-    assert not mosaic.contains(hex.leftNear)
-    assert not mosaic.contains(hex.leftFar)
-    assert mosaic.contains(hex.rightNear)
-    assert not mosaic.contains(hex.rightFar)
+    assert not mosaic.contains(hex.left_near)
+    assert not mosaic.contains(hex.left_far)
+    assert mosaic.contains(hex.right_near)
+    assert not mosaic.contains(hex.right_far)
     assert not mosaic.contains(hex.opposite)
 
-    hex = mosaic.placedTile(0, 0).vertices.a.hex
+    hex = mosaic.placed_tile(0, 0).vertices.a.hex
 
     assert mosaic.contains(hex.main)
-    assert not mosaic.contains(hex.leftNear)
-    assert not mosaic.contains(hex.leftFar)
-    assert not mosaic.contains(hex.rightNear)
-    assert not mosaic.contains(hex.rightFar)
+    assert not mosaic.contains(hex.left_near)
+    assert not mosaic.contains(hex.left_far)
+    assert not mosaic.contains(hex.right_near)
+    assert not mosaic.contains(hex.right_far)
     assert not mosaic.contains(hex.opposite)
 
-    hex = mosaic.placedTile(0, 0).vertices.b.hex
+    hex = mosaic.placed_tile(0, 0).vertices.b.hex
 
     assert mosaic.contains(hex.main)
-    assert mosaic.contains(hex.leftNear)
-    assert not mosaic.contains(hex.leftFar)
-    assert not mosaic.contains(hex.rightNear)
-    assert not mosaic.contains(hex.rightFar)
+    assert mosaic.contains(hex.left_near)
+    assert not mosaic.contains(hex.left_far)
+    assert not mosaic.contains(hex.right_near)
+    assert not mosaic.contains(hex.right_far)
     assert not mosaic.contains(hex.opposite)
 
 
@@ -126,26 +126,26 @@ def test_tile_vertice_offset_center():
     tile = Tile(0, 0)
     mosaic = Mosaic().add(tile)
 
-    assert mosaic.placedTile(0,0).vertices.a == Vertex(tile, VertexPos.A)
-    assert mosaic.placedTile(0,0).vertices.b == Vertex(tile, VertexPos.B)
-    assert mosaic.placedTile(0,0).vertices.c == Vertex(tile, VertexPos.C)
+    assert mosaic.placed_tile(0,0).vertices.a == Vertex(tile, VertexPos.A)
+    assert mosaic.placed_tile(0,0).vertices.b == Vertex(tile, VertexPos.B)
+    assert mosaic.placed_tile(0,0).vertices.c == Vertex(tile, VertexPos.C)
 
-    assert mosaic.placedTile(0,0).vertices.a.movedPoints(clr) == [Point(1.5,sin60)]
-    assert mosaic.placedTile(0,0).vertices.b.movedPoints(clr) == [Point(side-1.5,sin60)]
-    assert mosaic.placedTile(0,0).vertices.c.movedPoints(clr) == [Point(side/2,side*sin60-sin60*2)]
+    assert mosaic.placed_tile(0,0).vertices.a.moved_points(clr) == [Point(1.5,sin60)]
+    assert mosaic.placed_tile(0,0).vertices.b.moved_points(clr) == [Point(side-1.5,sin60)]
+    assert mosaic.placed_tile(0,0).vertices.c.moved_points(clr) == [Point(side/2,side*sin60-sin60*2)]
 
 def test_tile_vertice_offset_left_and_right():
     clr = sin60
     tile = Tile(0, 0)
     mosaic = Mosaic().add(tile).add(Tile(1,0))
 
-    assert mosaic.placedTile(0,0).vertices.a == Vertex(tile, VertexPos.A)
-    assert mosaic.placedTile(0,0).vertices.b == Vertex(tile, VertexPos.B).markPlaced(VertexHexKey.LEFT_NEAR)
-    assert mosaic.placedTile(0,0).vertices.c == Vertex(tile, VertexPos.C).markPlaced(VertexHexKey.RIGHT_NEAR)
+    assert mosaic.placed_tile(0,0).vertices.a == Vertex(tile, VertexPos.A)
+    assert mosaic.placed_tile(0,0).vertices.b == Vertex(tile, VertexPos.B).mark_placed(VertexHexKey.LEFT_NEAR)
+    assert mosaic.placed_tile(0,0).vertices.c == Vertex(tile, VertexPos.C).mark_placed(VertexHexKey.RIGHT_NEAR)
 
-    assert mosaic.placedTile(0,0).vertices.a.movedPoints(clr) == [Point(1.5,sin60)]
-    assert mosaic.placedTile(0,0).vertices.b.movedPoints(clr) == [Point(side-0.5,sin60)]
-    assert mosaic.placedTile(0,0).vertices.c.movedPoints(clr) == [Point(side/2+0.5,side*sin60-sin60)]
+    assert mosaic.placed_tile(0,0).vertices.a.moved_points(clr) == [Point(1.5,sin60)]
+    assert mosaic.placed_tile(0,0).vertices.b.moved_points(clr) == [Point(side-0.5,sin60)]
+    assert mosaic.placed_tile(0,0).vertices.c.moved_points(clr) == [Point(side/2+0.5,side*sin60-sin60)]
 
 
 def test_tile_vertice_offset_left_right_and_split():
@@ -153,13 +153,13 @@ def test_tile_vertice_offset_left_right_and_split():
     tile = Tile(0, 0)
     mosaic = Mosaic().add(tile).add(Tile(1,0)).add(Tile(-1,0)).add(Tile(-1,1)).add(Tile(0,1))
 
-    assert mosaic.placedTile(0,0).vertices.a == Vertex(tile, VertexPos.A).markPlaced(VertexHexKey.RIGHT_NEAR)
-    assert mosaic.placedTile(0,0).vertices.b == Vertex(tile, VertexPos.B).markPlaced(VertexHexKey.LEFT_NEAR)
-    assert mosaic.placedTile(0,0).vertices.c == Vertex(tile, VertexPos.C).markPlaced(VertexHexKey.RIGHT_NEAR).markPlaced(VertexHexKey.LEFT_NEAR).markPlaced(VertexHexKey.LEFT_FAR).markPlaced(VertexHexKey.OPPOSITE)
+    assert mosaic.placed_tile(0,0).vertices.a == Vertex(tile, VertexPos.A).mark_placed(VertexHexKey.RIGHT_NEAR)
+    assert mosaic.placed_tile(0,0).vertices.b == Vertex(tile, VertexPos.B).mark_placed(VertexHexKey.LEFT_NEAR)
+    assert mosaic.placed_tile(0,0).vertices.c == Vertex(tile, VertexPos.C).mark_placed(VertexHexKey.RIGHT_NEAR).mark_placed(VertexHexKey.LEFT_NEAR).mark_placed(VertexHexKey.LEFT_FAR).mark_placed(VertexHexKey.OPPOSITE)
 
-    assert mosaic.placedTile(0,0).vertices.a.movedPoints(clr) == [Point(0.5,sin60)]
-    assert mosaic.placedTile(0,0).vertices.b.movedPoints(clr) == [Point(side-0.5,sin60)]
-    assert mosaic.placedTile(0,0).vertices.c.movedPoints(clr) == [
+    assert mosaic.placed_tile(0,0).vertices.a.moved_points(clr) == [Point(0.5,sin60)]
+    assert mosaic.placed_tile(0,0).vertices.b.moved_points(clr) == [Point(side-0.5,sin60)]
+    assert mosaic.placed_tile(0,0).vertices.c.moved_points(clr) == [
         Point(side/2-0.5,side*sin60-sin60),
         Point(side/2+0.5,side*sin60-sin60),
     ]
@@ -169,10 +169,10 @@ def test_tile_vertice_offset_none():
     tile = Tile(0, 0)
     mosaic = Mosaic().add(tile).add(Tile(1,0)).add(Tile(-1,0)).add(Tile(-1,1)).add(Tile(0,1)).add(Tile(1,1))
 
-    assert mosaic.placedTile(0,0).vertices.a == Vertex(tile, VertexPos.A).markPlaced(VertexHexKey.RIGHT_NEAR)
-    assert mosaic.placedTile(0,0).vertices.b == Vertex(tile, VertexPos.B).markPlaced(VertexHexKey.LEFT_NEAR)
-    assert mosaic.placedTile(0,0).vertices.c == Vertex(tile, VertexPos.C).markPlaced(VertexHexKey.RIGHT_NEAR).markPlaced(VertexHexKey.LEFT_NEAR).markPlaced(VertexHexKey.LEFT_FAR).markPlaced(VertexHexKey.RIGHT_FAR).markPlaced(VertexHexKey.OPPOSITE)
+    assert mosaic.placed_tile(0,0).vertices.a == Vertex(tile, VertexPos.A).mark_placed(VertexHexKey.RIGHT_NEAR)
+    assert mosaic.placed_tile(0,0).vertices.b == Vertex(tile, VertexPos.B).mark_placed(VertexHexKey.LEFT_NEAR)
+    assert mosaic.placed_tile(0,0).vertices.c == Vertex(tile, VertexPos.C).mark_placed(VertexHexKey.RIGHT_NEAR).mark_placed(VertexHexKey.LEFT_NEAR).mark_placed(VertexHexKey.LEFT_FAR).mark_placed(VertexHexKey.RIGHT_FAR).mark_placed(VertexHexKey.OPPOSITE)
 
-    assert mosaic.placedTile(0,0).vertices.a.movedPoints(clr) == [Point(0.5,sin60)]
-    assert mosaic.placedTile(0,0).vertices.b.movedPoints(clr) == [Point(side-0.5,sin60)]
-    assert mosaic.placedTile(0,0).vertices.c.movedPoints(clr) == [Point(side/2,side*sin60)]
+    assert mosaic.placed_tile(0,0).vertices.a.moved_points(clr) == [Point(0.5,sin60)]
+    assert mosaic.placed_tile(0,0).vertices.b.moved_points(clr) == [Point(side-0.5,sin60)]
+    assert mosaic.placed_tile(0,0).vertices.c.moved_points(clr) == [Point(side/2,side*sin60)]

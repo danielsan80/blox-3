@@ -13,25 +13,25 @@ tile = Tile(0,0)
 
 triangle = (
     cq.Sketch().polygon([
-        tile.vertices.a.toTuple(),
-        tile.vertices.b.toTuple(),
-        tile.vertices.c.toTuple(),
+        tile.vertices.a.to_tuple(),
+        tile.vertices.b.to_tuple(),
+        tile.vertices.c.to_tuple(),
     ])
 )
 
 base = (
     cq.Sketch().polygon([
-        tile.vertices.a.move(tile.incenter, clr*2).toTuple(),
-        tile.vertices.b.move(tile.incenter, clr*2).toTuple(),
-        tile.vertices.c.move(tile.incenter, clr*2).toTuple(),
+        tile.vertices.a.move(tile.incenter, clr*2).to_tuple(),
+        tile.vertices.b.move(tile.incenter, clr*2).to_tuple(),
+        tile.vertices.c.move(tile.incenter, clr*2).to_tuple(),
     ])
 )
 
 base_ext = (
     cq.Sketch().polygon([
-        tile.vertices.a.move(tile.incenter, clr*2+ext*2).toTuple(),
-        tile.vertices.b.move(tile.incenter, clr*2+ext*2).toTuple(),
-        tile.vertices.c.move(tile.incenter, clr*2+ext*2).toTuple(),
+        tile.vertices.a.move(tile.incenter, clr*2+ext*2).to_tuple(),
+        tile.vertices.b.move(tile.incenter, clr*2+ext*2).to_tuple(),
+        tile.vertices.c.move(tile.incenter, clr*2+ext*2).to_tuple(),
     ])
 )
 

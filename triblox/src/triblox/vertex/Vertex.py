@@ -19,7 +19,7 @@ class Vertex:
     tile: Tile
     pos: VertexPos
     hex: VertexHex = field(init=False)
-    _placedMap: Dict[VertexHexKey, bool] = field(init=False)
+    _placed_map: Dict[VertexHexKey, bool] = field(init=False)
 
     def __post_init__(self):
         object.__setattr__(self, "hex", VertexHex(self.tile, self.pos))
@@ -33,52 +33,52 @@ class Vertex:
             VertexHexKey.RIGHT_NEAR: False,
         }
 
-        object.__setattr__(self, "_placedMap", placedMap)
+        object.__setattr__(self, "_placed_map", placedMap)
 
-    def markPlaced(self, key: VertexHexKey):
-        placedMap = self._placedMap.copy()
+    def mark_placed(self, key: VertexHexKey):
+        placedMap = self._placed_map.copy()
         placedMap[key] = True
 
         obj = Vertex(self.tile, self.pos)
-        object.__setattr__(obj, "_placedMap", placedMap)
+        object.__setattr__(obj, "_placed_map", placedMap)
         return obj
 
-    def isMainPlaced(self) -> bool:
-        return self._placedMap[VertexHexKey.MAIN]
+    def is_main_placed(self) -> bool:
+        return self._placed_map[VertexHexKey.MAIN]
 
-    def isLeftNearPlaced(self) -> bool:
-        return self._placedMap[VertexHexKey.LEFT_NEAR]
+    def is_left_near_placed(self) -> bool:
+        return self._placed_map[VertexHexKey.LEFT_NEAR]
 
-    def isLeftFarPlaced(self) -> bool:
-        return self._placedMap[VertexHexKey.LEFT_FAR]
+    def is_left_far_placed(self) -> bool:
+        return self._placed_map[VertexHexKey.LEFT_FAR]
 
-    def isRightNearPlaced(self) -> bool:
-        return self._placedMap[VertexHexKey.RIGHT_NEAR]
+    def is_right_near_placed(self) -> bool:
+        return self._placed_map[VertexHexKey.RIGHT_NEAR]
 
-    def isRightFarPlaced(self) -> bool:
-        return self._placedMap[VertexHexKey.RIGHT_FAR]
+    def is_right_far_placed(self) -> bool:
+        return self._placed_map[VertexHexKey.RIGHT_FAR]
 
-    def isOppositePlaced(self) -> bool:
-        return self._placedMap[VertexHexKey.OPPOSITE]
+    def is_opposite_placed(self) -> bool:
+        return self._placed_map[VertexHexKey.OPPOSITE]
 
-    def isAllPlaced(self) -> bool:
-        return all(self._placedMap.values())
+    def is_all_placed(self) -> bool:
+        return all(self._placed_map.values())
 
     def offset(self) -> VertexOffset:
-        if not self.isLeftNearPlaced() and not self.isRightNearPlaced():
+        if not self.is_left_near_placed() and not self.is_right_near_placed():
             return VertexOffset.CENTER
-        if self.isLeftNearPlaced() and not self.isRightNearPlaced():
+        if self.is_left_near_placed() and not self.is_right_near_placed():
             return VertexOffset.LEFT
-        if not self.isLeftNearPlaced() and self.isRightNearPlaced():
+        if not self.is_left_near_placed() and self.is_right_near_placed():
             return VertexOffset.RIGHT
-        if self.isAllPlaced():
+        if self.is_all_placed():
             return VertexOffset.NONE
         return VertexOffset.SPLIT
 
     def point(self) -> Point:
         return self.tile.vertices.get(self.pos)
 
-    def movedPoints(self, value: float) -> Tuple[Point]:
+    def moved_points(self, value: float) -> Tuple[Point]:
         point = self.tile.vertices.get(self.pos)
         if self.offset() == VertexOffset.CENTER:
             destination = self.tile.incenter

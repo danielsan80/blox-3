@@ -17,15 +17,15 @@ import re
 def test_up_a():
     tile = Tile(0, 0)
 
-    vertexHex = VertexHex(tile, VertexPos.A)
+    vertex_hex = VertexHex(tile, VertexPos.A)
 
     actual = [
-        vertexHex.main,
-        vertexHex.leftNear,
-        vertexHex.leftFar,
-        vertexHex.opposite,
-        vertexHex.rightFar,
-        vertexHex.rightNear,
+        vertex_hex.main,
+        vertex_hex.left_near,
+        vertex_hex.left_far,
+        vertex_hex.opposite,
+        vertex_hex.right_far,
+        vertex_hex.right_near,
     ]
 
     expected = [
@@ -42,15 +42,15 @@ def test_up_a():
 def test_up_b():
     tile = Tile(0, 0)
 
-    vertexHex = VertexHex(tile, VertexPos.B)
+    vertex_hex = VertexHex(tile, VertexPos.B)
 
     actual = [
-        vertexHex.main,
-        vertexHex.leftNear,
-        vertexHex.leftFar,
-        vertexHex.opposite,
-        vertexHex.rightFar,
-        vertexHex.rightNear,
+        vertex_hex.main,
+        vertex_hex.left_near,
+        vertex_hex.left_far,
+        vertex_hex.opposite,
+        vertex_hex.right_far,
+        vertex_hex.right_near,
     ]
 
     expected = [
@@ -68,15 +68,15 @@ def test_up_b():
 def test_up_c():
     tile = Tile(0, 0)
 
-    vertexHex = VertexHex(tile, VertexPos.C)
+    vertex_hex = VertexHex(tile, VertexPos.C)
 
     actual = [
-        vertexHex.main,
-        vertexHex.leftNear,
-        vertexHex.leftFar,
-        vertexHex.opposite,
-        vertexHex.rightFar,
-        vertexHex.rightNear,
+        vertex_hex.main,
+        vertex_hex.left_near,
+        vertex_hex.left_far,
+        vertex_hex.opposite,
+        vertex_hex.right_far,
+        vertex_hex.right_near,
     ]
 
     expected = [
@@ -93,16 +93,16 @@ def test_up_c():
 def test_down_a():
     tile = Tile(1, 0)
 
-    vertexHex = VertexHex(tile, VertexPos.A)
+    vertex_hex = VertexHex(tile, VertexPos.A)
 
 
     actual = [
-        vertexHex.main,
-        vertexHex.leftNear,
-        vertexHex.leftFar,
-        vertexHex.opposite,
-        vertexHex.rightFar,
-        vertexHex.rightNear,
+        vertex_hex.main,
+        vertex_hex.left_near,
+        vertex_hex.left_far,
+        vertex_hex.opposite,
+        vertex_hex.right_far,
+        vertex_hex.right_near,
     ]
 
     expected = [
@@ -119,16 +119,16 @@ def test_down_a():
 def test_down_b():
     tile = Tile(1, 0)
 
-    vertexHex = VertexHex(tile, VertexPos.B)
+    vertex_hex = VertexHex(tile, VertexPos.B)
 
 
     actual = [
-        vertexHex.main,
-        vertexHex.leftNear,
-        vertexHex.leftFar,
-        vertexHex.opposite,
-        vertexHex.rightFar,
-        vertexHex.rightNear,
+        vertex_hex.main,
+        vertex_hex.left_near,
+        vertex_hex.left_far,
+        vertex_hex.opposite,
+        vertex_hex.right_far,
+        vertex_hex.right_near,
     ]
 
     expected = [
@@ -145,16 +145,16 @@ def test_down_b():
 def test_down_c():
     tile = Tile(1, 0)
 
-    vertexHex = VertexHex(tile, VertexPos.C)
+    vertex_hex = VertexHex(tile, VertexPos.C)
 
 
     actual = [
-        vertexHex.main,
-        vertexHex.leftNear,
-        vertexHex.leftFar,
-        vertexHex.opposite,
-        vertexHex.rightFar,
-        vertexHex.rightNear,
+        vertex_hex.main,
+        vertex_hex.left_near,
+        vertex_hex.left_far,
+        vertex_hex.opposite,
+        vertex_hex.right_far,
+        vertex_hex.right_near,
     ]
 
     expected = [

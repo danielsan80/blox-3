@@ -17,27 +17,27 @@ class Vertices:
     def _map(self) -> dict[VertexPos, Point]:
         return {VertexPos.A: self.a, VertexPos.B: self.b, VertexPos.C: self.c}
 
-    def _leftMap(self) -> dict[VertexPos, VertexPos]:
+    def _left_map(self) -> dict[VertexPos, VertexPos]:
         return {
             VertexPos.A: VertexPos.B,
             VertexPos.B: VertexPos.C,
             VertexPos.C: VertexPos.A,
         }
 
-    def _rightMap(self) -> dict[VertexPos, VertexPos]:
+    def _right_map(self) -> dict[VertexPos, VertexPos]:
         return {
             VertexPos.A: VertexPos.C,
             VertexPos.B: VertexPos.A,
             VertexPos.C: VertexPos.B,
         }
 
-    def get(self, vertexPos: VertexPos) -> Point:
-        return self._map()[vertexPos]
+    def get(self, vertex_pos: VertexPos) -> Point:
+        return self._map()[vertex_pos]
 
-    def left(self, vertexPos: VertexPos) -> Point:
-        leftVertexPos = self._leftMap()[vertexPos]
-        return self.get(leftVertexPos)
+    def left(self, vertex_pos: VertexPos) -> Point:
+        left_vertex_pos = self._left_map()[vertex_pos]
+        return self.get(left_vertex_pos)
 
-    def right(self, vertexPos: VertexPos) -> Point:
-        rightVertexPos = self._rightMap()[vertexPos]
-        return self.get(rightVertexPos)
+    def right(self, vertex_pos: VertexPos) -> Point:
+        right_vertex_pos = self._right_map()[vertex_pos]
+        return self.get(right_vertex_pos)

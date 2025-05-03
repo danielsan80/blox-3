@@ -37,11 +37,11 @@ class Tile:
 
     @property
     def vertices(self) -> Vertices:
-        if self.direction.isUp():
+        if self.direction.is_up():
             a = Point(self.x / 2 * side, self.y * sin60 * side)
             b = Point(a.x + side, a.y)
             c = Point(a.x + side / 2, (self.y + 1) * sin60 * side)
-        elif self.direction.isDown():
+        elif self.direction.is_down():
             a = Point((0.5 + (self.x + 1) / 2) * side, (self.y + 1) * sin60 * side)
             b = Point(a.x - side, a.y)
             c = Point(a.x - side / 2, self.y * sin60 * side)
@@ -59,12 +59,12 @@ class Tile:
         )
 
     @property
-    def adjacentTiles(self) -> AdjacentTiles:
-        if self.direction.isUp():
+    def adjacent_tiles(self) -> AdjacentTiles:
+        if self.direction.is_up():
             ab = self.down()
             bc = self.right()
             ca = self.left()
-        elif self.direction.isDown():
+        elif self.direction.is_down():
             ab = self.up()
             bc = self.left()
             ca = self.right()
@@ -72,14 +72,14 @@ class Tile:
             raise ValueError("This should never happen")
         return AdjacentTiles(ab, bc, ca)
 
-    def isAdjacent(self, tile: "Tile") -> bool:
+    def is_adjacent(self, tile: "Tile") -> bool:
         if tile.coord == self.coord:
             raise ValueError("The given tile is the same")
-        if tile.coord == self.adjacentTiles.ab.coord:
+        if tile.coord == self.adjacent_tiles.ab.coord:
             return True
-        if tile.coord == self.adjacentTiles.bc.coord:
+        if tile.coord == self.adjacent_tiles.bc.coord:
             return True
-        if tile.coord == self.adjacentTiles.ca.coord:
+        if tile.coord == self.adjacent_tiles.ca.coord:
             return True
         return False
 

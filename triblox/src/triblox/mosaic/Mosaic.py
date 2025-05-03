@@ -21,61 +21,61 @@ class Mosaic:
         if self.contains(tile):
             raise ValueError(f"The mosaic already contains the tile {tile}")
 
-        if not self.isEmpty() and not self.isAdjacent(tile):
+        if not self.is_empty() and not self.is_adjacent(tile):
             raise ValueError(
                 f"The tile {tile} is not adjacent to any tile in the mosaic"
             )
 
         key = str(tile.coord)
-        newTiles = self.tiles.copy()
-        newTiles[key] = tile
-        return Mosaic(tiles=newTiles)
+        tiles = self.tiles.copy()
+        tiles[key] = tile
+        return Mosaic(tiles=tiles)
 
     def contains(self, tile: Tile) -> bool:
         return str(tile.coord) in self.tiles
 
-    def isAdjacent(self, tile: Tile) -> bool:
-        if self.isEmpty():
+    def is_adjacent(self, tile: Tile) -> bool:
+        if self.is_empty():
             raise ValueError("The mosaic is empty")
 
         if self.contains(tile):
             raise ValueError(f"The tile {tile} is already in the mosaic")
 
         return any(
-            existingTile.isAdjacent(tile) for existingTile in self.tiles.values()
+            existing_tile.is_adjacent(tile) for existing_tile in self.tiles.values()
         )
 
-    def isEmpty(self) -> bool:
+    def is_empty(self) -> bool:
         return len(self.tiles) == 0
 
-    def placedTile(self, x: int, y: int) -> PlacedTile:
+    def placed_tile(self, x: int, y: int) -> PlacedTile:
         tile = self.tiles.get(str(Coord(x, y)))
         if tile is None:
             raise ValueError(f"The tile at ({x}, {y}) is not in the mosaic")
 
-        placedVertices = PlacedVertices(
-            self._placedVertex(tile, VertexPos.A),
-            self._placedVertex(tile, VertexPos.B),
-            self._placedVertex(tile, VertexPos.C),
+        placed_vertices = PlacedVertices(
+            self._placed_vertex(tile, VertexPos.A),
+            self._placed_vertex(tile, VertexPos.B),
+            self._placed_vertex(tile, VertexPos.C),
         )
 
-        placedTile = PlacedTile(tile, placedVertices)
-        return placedTile
+        placed_tile = PlacedTile(tile, placed_vertices)
+        return placed_tile
 
     @property
-    def placedTiles(self) -> Dict[str, PlacedTile]:
-        placedTiles = dict()
+    def placed_tiles(self) -> Dict[str, PlacedTile]:
+        placed_tiles = dict()
         for tile in self.tiles.values():
-            placedTile = self.placedTile(tile.coord.x, tile.coord.y)
-            placedTiles[str(tile.coord)] = placedTile
+            placed_tile = self.placed_tile(tile.coord.x, tile.coord.y)
+            placed_tiles[str(tile.coord)] = placed_tile
 
-        return placedTiles
+        return placed_tiles
 
-    def _placedVertex(self, tile: Tile, vertexPos: VertexPos) -> Vertex:
-        vertex = Vertex(tile, vertexPos)
+    def _placed_vertex(self, tile: Tile, vertex_pos: VertexPos) -> Vertex:
+        vertex = Vertex(tile, vertex_pos)
 
         for key, tile in vertex.hex.tiles.items():
             if self.contains(tile):
-                vertex = vertex.markPlaced(key)
+                vertex = vertex.mark_placed(key)
 
         return vertex

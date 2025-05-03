@@ -23,8 +23,8 @@ class Direction:
     def down(cls) -> "Direction":
         return cls(DirectionValue.DOWN)
 
-    def isUp(self) -> bool:
+    def is_up(self) -> bool:
         return self.value == DirectionValue.UP
 
-    def isDown(self) -> bool:
+    def is_down(self) -> bool:
         return self.value == DirectionValue.DOWN

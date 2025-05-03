@@ -16,5 +16,5 @@ def test_it_can_move_a_Point_to_another_Point_of_a_given_value():
 
 def test_it_can_be_converted_to_a_tuple():
     point = Point(1, 2)
-    assert point.toTuple() == (1, 2)
+    assert point.to_tuple() == (1, 2)
 

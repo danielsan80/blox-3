@@ -22,104 +22,104 @@ import re
 def test_create_Vertex_for_center_offset():
     clr = sin60
     tile = Tile(0, 0)
-    vertexPos = VertexPos.C
-    vertex = Vertex(tile, vertexPos)
-    vertexHex = VertexHex(tile, vertexPos)
+    vertex_pos = VertexPos.C
+    vertex = Vertex(tile, vertex_pos)
+    vertex_hex = VertexHex(tile, vertex_pos)
 
     assert vertex.tile == tile
-    assert vertex.pos == vertexPos
-    assert vertex.hex == vertexHex
+    assert vertex.pos == vertex_pos
+    assert vertex.hex == vertex_hex
 
-    assert vertex.isMainPlaced() is True
-    assert vertex.isLeftNearPlaced() is False
-    assert vertex.isLeftFarPlaced() is False
-    assert vertex.isRightNearPlaced() is False
-    assert vertex.isRightFarPlaced() is False
-    assert vertex.isOppositePlaced() is False
+    assert vertex.is_main_placed() is True
+    assert vertex.is_left_near_placed() is False
+    assert vertex.is_left_far_placed() is False
+    assert vertex.is_right_near_placed() is False
+    assert vertex.is_right_far_placed() is False
+    assert vertex.is_opposite_placed() is False
 
     assert vertex.offset() == VertexOffset.CENTER
     assert vertex.point() == tile.vertices.c
-    assert vertex.movedPoints(clr) == [tile.vertices.c.move(tile.incenter, clr*2)]
+    assert vertex.moved_points(clr) == [tile.vertices.c.move(tile.incenter, clr*2)]
 
 
 def test_create_Vertex_for_left_offset():
     clr = sin60
     tile = Tile(0, 0)
-    vertexPos = VertexPos.C
-    vertex = Vertex(tile, vertexPos)
-    vertexHex = VertexHex(tile, vertexPos)
+    vertex_pos = VertexPos.C
+    vertex = Vertex(tile, vertex_pos)
+    vertex_hex = VertexHex(tile, vertex_pos)
 
-    vertex = vertex.markPlaced(VertexHexKey.LEFT_NEAR)
+    vertex = vertex.mark_placed(VertexHexKey.LEFT_NEAR)
 
     assert vertex.tile == tile
-    assert vertex.pos == vertexPos
-    assert vertex.hex == vertexHex
+    assert vertex.pos == vertex_pos
+    assert vertex.hex == vertex_hex
 
-    assert vertex.isMainPlaced() is True
-    assert vertex.isLeftNearPlaced() is True
-    assert vertex.isLeftFarPlaced() is False
-    assert vertex.isRightNearPlaced() is False
-    assert vertex.isRightFarPlaced() is False
-    assert vertex.isOppositePlaced() is False
+    assert vertex.is_main_placed() is True
+    assert vertex.is_left_near_placed() is True
+    assert vertex.is_left_far_placed() is False
+    assert vertex.is_right_near_placed() is False
+    assert vertex.is_right_far_placed() is False
+    assert vertex.is_opposite_placed() is False
 
     assert vertex.offset() == VertexOffset.LEFT
     assert vertex.point() == tile.vertices.c
-    assert vertex.movedPoints(clr) == [tile.vertices.c.move(tile.vertices.a, 1)]
+    assert vertex.moved_points(clr) == [tile.vertices.c.move(tile.vertices.a, 1)]
 
 def test_create_Vertex_for_right_offset():
     clr = sin60
     tile = Tile(0, 0)
-    vertexPos = VertexPos.C
-    vertex = Vertex(tile, vertexPos)
-    vertexHex = VertexHex(tile, vertexPos)
+    vertex_pos = VertexPos.C
+    vertex = Vertex(tile, vertex_pos)
+    vertex_hex = VertexHex(tile, vertex_pos)
 
-    vertex = vertex.markPlaced(VertexHexKey.RIGHT_NEAR)
+    vertex = vertex.mark_placed(VertexHexKey.RIGHT_NEAR)
 
     assert vertex.tile == tile
-    assert vertex.pos == vertexPos
-    assert vertex.hex == vertexHex
+    assert vertex.pos == vertex_pos
+    assert vertex.hex == vertex_hex
 
-    assert vertex.isMainPlaced() is True
-    assert vertex.isLeftNearPlaced() is False
-    assert vertex.isLeftFarPlaced() is False
-    assert vertex.isRightNearPlaced() is True
-    assert vertex.isRightFarPlaced() is False
-    assert vertex.isOppositePlaced() is False
+    assert vertex.is_main_placed() is True
+    assert vertex.is_left_near_placed() is False
+    assert vertex.is_left_far_placed() is False
+    assert vertex.is_right_near_placed() is True
+    assert vertex.is_right_far_placed() is False
+    assert vertex.is_opposite_placed() is False
 
     assert vertex.offset() == VertexOffset.RIGHT
     assert vertex.point() == tile.vertices.c
-    assert vertex.movedPoints(clr) == [tile.vertices.c.move(tile.vertices.b, 1)]
+    assert vertex.moved_points(clr) == [tile.vertices.c.move(tile.vertices.b, 1)]
 
 def test_create_Vertex_for_split_offset():
     clr = sin60
     tile = Tile(0, 0)
-    vertexPos = VertexPos.C
-    vertex = Vertex(tile, vertexPos)
-    vertexHex = VertexHex(tile, vertexPos)
+    vertex_pos = VertexPos.C
+    vertex = Vertex(tile, vertex_pos)
+    vertex_hex = VertexHex(tile, vertex_pos)
 
     vertex = (
-        vertex.markPlaced(VertexHexKey.LEFT_NEAR)
-        .markPlaced(VertexHexKey.RIGHT_NEAR)
+        vertex.mark_placed(VertexHexKey.LEFT_NEAR)
+        .mark_placed(VertexHexKey.RIGHT_NEAR)
     )
 
     assert vertex.tile == tile
-    assert vertex.pos == vertexPos
-    assert vertex.hex == vertexHex
+    assert vertex.pos == vertex_pos
+    assert vertex.hex == vertex_hex
 
-    assert vertex.isMainPlaced() is True
-    assert vertex.isLeftNearPlaced() is True
-    assert vertex.isLeftFarPlaced() is False
-    assert vertex.isRightNearPlaced() is True
-    assert vertex.isRightFarPlaced() is False
-    assert vertex.isOppositePlaced() is False
+    assert vertex.is_main_placed() is True
+    assert vertex.is_left_near_placed() is True
+    assert vertex.is_left_far_placed() is False
+    assert vertex.is_right_near_placed() is True
+    assert vertex.is_right_far_placed() is False
+    assert vertex.is_opposite_placed() is False
 
     assert vertex.offset() == VertexOffset.SPLIT
     assert vertex.point() == tile.vertices.c
-    assert vertex.movedPoints(clr) == [
+    assert vertex.moved_points(clr) == [
         tile.vertices.c.move(tile.vertices.a, 1),
         tile.vertices.c.move(tile.vertices.b, 1)
     ]
-    assert not vertex.movedPoints(clr) == [
+    assert not vertex.moved_points(clr) == [
         tile.vertices.c.move(tile.vertices.b, 1),
         tile.vertices.c.move(tile.vertices.a, 1)
     ]
@@ -127,33 +127,33 @@ def test_create_Vertex_for_split_offset():
 def test_create_Vertex_for_none_offset():
     clr = sin60
     tile = Tile(0, 0)
-    vertexPos = VertexPos.C
-    vertex = Vertex(tile, vertexPos)
-    vertexHex = VertexHex(tile, vertexPos)
+    vertex_pos = VertexPos.C
+    vertex = Vertex(tile, vertex_pos)
+    vertex_hex = VertexHex(tile, vertex_pos)
 
     vertex = (
         vertex
-        .markPlaced(VertexHexKey.LEFT_NEAR)
-        .markPlaced(VertexHexKey.LEFT_FAR)
-        .markPlaced(VertexHexKey.OPPOSITE)
-        .markPlaced(VertexHexKey.RIGHT_FAR)
-        .markPlaced(VertexHexKey.RIGHT_NEAR)
+        .mark_placed(VertexHexKey.LEFT_NEAR)
+        .mark_placed(VertexHexKey.LEFT_FAR)
+        .mark_placed(VertexHexKey.OPPOSITE)
+        .mark_placed(VertexHexKey.RIGHT_FAR)
+        .mark_placed(VertexHexKey.RIGHT_NEAR)
     )
 
     assert vertex.tile == tile
-    assert vertex.pos == vertexPos
-    assert vertex.hex == vertexHex
+    assert vertex.pos == vertex_pos
+    assert vertex.hex == vertex_hex
 
-    assert vertex.isMainPlaced() is True
-    assert vertex.isLeftNearPlaced() is True
-    assert vertex.isLeftFarPlaced() is True
-    assert vertex.isRightNearPlaced() is True
-    assert vertex.isRightFarPlaced() is True
-    assert vertex.isOppositePlaced() is True
+    assert vertex.is_main_placed() is True
+    assert vertex.is_left_near_placed() is True
+    assert vertex.is_left_far_placed() is True
+    assert vertex.is_right_near_placed() is True
+    assert vertex.is_right_far_placed() is True
+    assert vertex.is_opposite_placed() is True
 
     assert vertex.offset() == VertexOffset.NONE
     assert vertex.point() == tile.vertices.c
-    assert vertex.movedPoints(clr) == [
+    assert vertex.moved_points(clr) == [
         tile.vertices.c
     ]
 

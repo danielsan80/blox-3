@@ -33,5 +33,5 @@ class Point:
         ratio = value / distance
         return Point(self.x + dx * ratio, self.y + dy * ratio)
 
-    def toTuple(self) -> tuple:
+    def to_tuple(self) -> tuple:
         return (self.x, self.y)
