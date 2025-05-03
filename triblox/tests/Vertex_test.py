@@ -116,12 +116,12 @@ def test_create_Vertex_for_split_offset():
     assert vertex.offset() == VertexOffset.SPLIT
     assert vertex.point() == tile.vertices.c
     assert vertex.moved_points(clr) == [
+        tile.vertices.c.move(tile.vertices.b, 1),
         tile.vertices.c.move(tile.vertices.a, 1),
-        tile.vertices.c.move(tile.vertices.b, 1)
     ]
     assert not vertex.moved_points(clr) == [
+        tile.vertices.c.move(tile.vertices.a, 1),
         tile.vertices.c.move(tile.vertices.b, 1),
-        tile.vertices.c.move(tile.vertices.a, 1)
     ]
 
 def test_create_Vertex_for_none_offset():

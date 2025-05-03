@@ -4,8 +4,8 @@ sys.path.append("src/")
 
 from dataclasses import dataclass
 
-from triblox.tile.VertexPos import VertexPos
 from triblox.point.Point import Point
+from triblox.tile.VertexPos import VertexPos
 
 
 @dataclass(frozen=True)

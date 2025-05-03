@@ -5,10 +5,10 @@ sys.path.append("src/")
 from dataclasses import dataclass, field
 from typing import Dict, Tuple
 
-from triblox.vertex.VertexHexKey import VertexHexKey
-from triblox.tile.VertexPos import VertexPos
 from triblox.tile.Direction import DirectionValue
 from triblox.tile.Tile import Tile
+from triblox.tile.VertexPos import VertexPos
+from triblox.vertex.VertexHexKey import VertexHexKey
 
 
 @dataclass(frozen=True)

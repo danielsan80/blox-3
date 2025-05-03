@@ -6,12 +6,12 @@ from dataclasses import dataclass, field
 from typing import Dict, Tuple
 
 from triblox.helper.util import sin60
+from triblox.point.Point import Point
+from triblox.tile.Tile import Tile
+from triblox.tile.VertexPos import VertexPos
 from triblox.vertex.VertexHex import VertexHex
 from triblox.vertex.VertexHexKey import VertexHexKey
 from triblox.vertex.VertexOffset import VertexOffset
-from triblox.tile.VertexPos import VertexPos
-from triblox.point.Point import Point
-from triblox.tile.Tile import Tile
 
 
 @dataclass(frozen=True)
@@ -90,8 +90,8 @@ class Vertex:
             destination = self.tile.vertices.right(self.pos)
             return [point.move(destination, value / sin60)]
         if self.offset() == VertexOffset.SPLIT:
-            destination1 = self.tile.vertices.left(self.pos)
-            destination2 = self.tile.vertices.right(self.pos)
+            destination1 = self.tile.vertices.right(self.pos)
+            destination2 = self.tile.vertices.left(self.pos)
             return [
                 point.move(destination1, value / sin60),
                 point.move(destination2, value / sin60),
