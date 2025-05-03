@@ -6,6 +6,8 @@ from dataclasses import dataclass, field
 from typing import Dict
 
 from triblox.tile.Tile import Tile
+from triblox.tile.Coord import Coord
+from triblox.mosaic.PlacedTile import PlacedTile
 
 
 @dataclass(frozen=True)
@@ -42,3 +44,14 @@ class Mosaic:
 
     def isEmpty(self) -> bool:
         return len(self.tiles) == 0
+
+    def placedTile(self, x: int, y: int) -> PlacedTile:
+        tile = self.tiles.get(str(Coord(x, y)))
+        if tile is None:
+            raise ValueError(f"The tile at ({x}, {y}) is not in the mosaic")
+
+        return PlacedTile(tile)
+
+    @property
+    def placedTiles(self) -> Dict[str, PlacedTile]:
+        return {key: PlacedTile(tile) for key, tile in self.tiles.items()}

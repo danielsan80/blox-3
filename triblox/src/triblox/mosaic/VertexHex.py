@@ -7,7 +7,7 @@ from enum import Enum
 from typing import Dict
 
 from triblox.tile.Tile import Tile
-from triblox.tile.VertexPos import VertexPos
+from triblox.mosaic.VertexPos import VertexPos
 
 
 class VertexHexKey(Enum):

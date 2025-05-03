@@ -10,6 +10,13 @@ from triblox.mosaic.Mosaic import Mosaic
 from triblox.tile.Direction import Direction
 from triblox.point.Point import Point
 from triblox.helper.util import sin60
+from triblox.tile.Coord import Coord
+from triblox.mosaic.VertexHex import VertexHex
+from triblox.mosaic.VertexPos import VertexPos
+from triblox.mosaic.VertexHexes import VertexHexes
+from triblox.mosaic.PlacedTile import PlacedTile
+
+
 
 def test_empty_Mosaic():
     mosaic = Mosaic()
@@ -77,24 +84,37 @@ def test_error_when_add_tile_not_adjacent():
     with pytest.raises(ValueError, match=re.escape(f"The tile {tile2} is not adjacent to any tile in the mosaic")):
         mosaic.add(tile2)
 
-# def test_get_VertexHex():
-#     mosaic = Mosaic().add(Tile(0, 0)).add(Tile(1, 0))
-#
-#     hex = mosaic.placedTile(0, 0).vertexHexes.c
-#
-#     assert hex.main == Tile(0, 0)
-#     assert hex.leftNear == Tile(-1,0)
-#     assert hex.leftFar == Tile(-1,1)
-#     assert hex.rightNear == Tile(1,0)
-#     assert hex.rightFar == Tile(1,1)
-#     assert hex.opposite == Tile(0,1)
-#
-#     assert mosaic.contains(Tile(0, 0))
-#     assert not mosaic.contains(hex.leftNear)
-#     assert not mosaic.contains(hex.leftFar)
-#     assert mosaic.contains(hex.rightNear)
-#     assert not mosaic.contains(hex.rightFar)
-#     assert not mosaic.contains(hex.opposite)
+def test_get_VertexHex():
+    mosaic = Mosaic().add(Tile(0, 0)).add(Tile(1, 0))
+
+    assert len(mosaic.placedTiles) == 2
+
+    hex = mosaic.placedTile(0, 0).vertexHexes.c
+
+    assert mosaic.contains(hex.main)
+    assert not mosaic.contains(hex.leftNear)
+    assert not mosaic.contains(hex.leftFar)
+    assert mosaic.contains(hex.rightNear)
+    assert not mosaic.contains(hex.rightFar)
+    assert not mosaic.contains(hex.opposite)
+
+    hex = mosaic.placedTile(0, 0).vertexHexes.a
+
+    assert mosaic.contains(hex.main)
+    assert not mosaic.contains(hex.leftNear)
+    assert not mosaic.contains(hex.leftFar)
+    assert not mosaic.contains(hex.rightNear)
+    assert not mosaic.contains(hex.rightFar)
+    assert not mosaic.contains(hex.opposite)
+
+    hex = mosaic.placedTile(0, 0).vertexHexes.b
+
+    assert mosaic.contains(hex.main)
+    assert mosaic.contains(hex.leftNear)
+    assert not mosaic.contains(hex.leftFar)
+    assert not mosaic.contains(hex.rightNear)
+    assert not mosaic.contains(hex.rightFar)
+    assert not mosaic.contains(hex.opposite)
 
 
 # def test_tile_vertice_offsets():
