@@ -8,8 +8,8 @@ from triblox.tile.Direction import Direction
 from triblox.point.Point import Point
 from triblox.helper.util import sin60
 from triblox.tile.Coord import Coord
-from triblox.mosaic.VertexHex import VertexHex
-from triblox.mosaic.VertexPos import VertexPos
+from triblox.vertex.VertexHex import VertexHex
+from triblox.tile.VertexPos import VertexPos
 
 import pytest
 import re

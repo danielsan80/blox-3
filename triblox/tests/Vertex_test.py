@@ -9,11 +9,11 @@ from triblox.point.Point import Point
 from triblox.helper.util import sin60
 from triblox.tile.Tile import AdjacentTiles
 from triblox.tile.Coord import Coord
-from triblox.mosaic.VertexHex import VertexHex
-from triblox.mosaic.VertexPos import VertexPos
-from triblox.mosaic.Vertex import Vertex
-from triblox.mosaic.VertexOffset import VertexOffset
-from triblox.mosaic.VertexHexKey import VertexHexKey
+from triblox.vertex.VertexHex import VertexHex
+from triblox.tile.VertexPos import VertexPos
+from triblox.vertex.Vertex import Vertex
+from triblox.vertex.VertexOffset import VertexOffset
+from triblox.vertex.VertexHexKey import VertexHexKey
 
 
 import pytest

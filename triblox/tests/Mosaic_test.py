@@ -11,13 +11,13 @@ from triblox.tile.Direction import Direction
 from triblox.point.Point import Point
 from triblox.helper.util import sin60
 from triblox.tile.Coord import Coord
-from triblox.mosaic.VertexHex import VertexHex
+from triblox.vertex.VertexHex import VertexHex
 from triblox.mosaic.PlacedVertices import PlacedVertices
-from triblox.mosaic.VertexPos import VertexPos
+from triblox.tile.VertexPos import VertexPos
 from triblox.mosaic.PlacedTile import PlacedTile
-from triblox.mosaic.VertexOffset import VertexOffset
-from triblox.mosaic.Vertex import Vertex
-from triblox.mosaic.VertexHexKey import VertexHexKey
+from triblox.vertex.VertexOffset import VertexOffset
+from triblox.vertex.Vertex import Vertex
+from triblox.vertex.VertexHexKey import VertexHexKey
 
 
 

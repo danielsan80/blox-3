@@ -4,7 +4,7 @@ sys.path.append("src/")
 
 from dataclasses import dataclass
 
-from triblox.mosaic.VertexPos import VertexPos
+from triblox.tile.VertexPos import VertexPos
 from triblox.point.Point import Point
 
 

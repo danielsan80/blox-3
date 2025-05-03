@@ -7,8 +7,8 @@ from typing import Dict
 
 from triblox.mosaic.PlacedTile import PlacedTile
 from triblox.mosaic.PlacedVertices import PlacedVertices
-from triblox.mosaic.Vertex import Vertex
-from triblox.mosaic.VertexPos import VertexPos
+from triblox.vertex.Vertex import Vertex
+from triblox.tile.VertexPos import VertexPos
 from triblox.tile.Coord import Coord
 from triblox.tile.Tile import Tile
 

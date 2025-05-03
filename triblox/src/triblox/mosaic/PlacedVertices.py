@@ -4,7 +4,7 @@ sys.path.append("src/")
 
 from dataclasses import dataclass
 
-from triblox.mosaic.Vertex import Vertex
+from triblox.vertex.Vertex import Vertex
 
 
 @dataclass(frozen=True)

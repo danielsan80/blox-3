@@ -6,10 +6,10 @@ from dataclasses import dataclass, field
 from typing import Dict, Tuple
 
 from triblox.helper.util import sin60
-from triblox.mosaic.VertexHex import VertexHex
-from triblox.mosaic.VertexHexKey import VertexHexKey
-from triblox.mosaic.VertexOffset import VertexOffset
-from triblox.mosaic.VertexPos import VertexPos
+from triblox.vertex.VertexHex import VertexHex
+from triblox.vertex.VertexHexKey import VertexHexKey
+from triblox.vertex.VertexOffset import VertexOffset
+from triblox.tile.VertexPos import VertexPos
 from triblox.point.Point import Point
 from triblox.tile.Tile import Tile
 
