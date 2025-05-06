@@ -35,7 +35,7 @@ class TopVoid:
         return result
 
     def _tile_base_void(self, placed_tile: PlacedTile) -> Workplane:
-        clr1 = 0
+        clr1 = 0.00001
         points = []
         points += placed_tile.vertices.a.moved_points(clr1)
         points += placed_tile.vertices.b.moved_points(clr1)

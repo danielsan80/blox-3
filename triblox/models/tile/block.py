@@ -24,7 +24,19 @@ mosaic = (
     .add(Tile(0, 1))
     .add(Tile(-1, 1))
     .add(Tile(-1, 0))
+    .add(Tile(0, -1))
+    .add(Tile(1, -1))
+    .add(Tile(-1, -1))
+    .add(Tile(-2, 0))
 )
+
+# mosaic = (
+#     Mosaic()
+#     .add(Tile(0, 0))
+#     .add(Tile(-1, 0))
+#     .add(Tile(-2, 0))
+#     .add(Tile(-1, 1))
+# )
 
 base = Base(mosaic)
 prism = Prism(mosaic,hn)
@@ -41,4 +53,4 @@ result = (
 
 
 show_object(result)
-exporters.export(result, "result.stl")
+# exporters.export(result, "result.stl")
