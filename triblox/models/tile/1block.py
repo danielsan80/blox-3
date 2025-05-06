@@ -73,5 +73,3 @@ result = (
 )
 
 show_object(result)
-
-exporters.export(result, "1block.stl")
