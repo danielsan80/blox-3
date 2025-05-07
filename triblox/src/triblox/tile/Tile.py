@@ -18,6 +18,9 @@ class AdjacentTiles:
     bc: "Tile"
     ca: "Tile"
 
+    def to_list(self) -> list["Tile"]:
+        return [self.ab, self.bc, self.ca]
+
 
 @dataclass(frozen=True)
 class Tile:

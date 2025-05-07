@@ -13,6 +13,9 @@ from dataclasses import dataclass
 from triblox.block.Base import Base
 from triblox.block.Prism import Prism
 from triblox.block.TopVoid import TopVoid
+from triblox.block.PrismVoid import PrismVoid
+from triblox.block.BaseVoid import BaseVoid
+from triblox.block.BaseHoleVoid import BaseHoleVoid
 
 hn = 0.5
 
@@ -41,16 +44,22 @@ mosaic = (
 base = Base(mosaic)
 prism = Prism(mosaic,hn)
 topVoid = TopVoid(mosaic, hn)
+prismVoid = PrismVoid(mosaic, hn)
+baseVoid = BaseVoid(mosaic)
+baseHoleVoid = BaseHoleVoid(mosaic)
 
 result = (
     Workplane("XY")
     .union(base.get())
     .union(prism.get())
     .cut(topVoid.get())
+    .cut(prismVoid.get())
+    .cut(baseVoid.get())
+    .cut(baseHoleVoid.get())
 #     .union(base.get().translate((0, 0, h(hn))))
 #     .union(topVoid.get().translate((0, 0, 0.1)))
 )
 
 
 show_object(result)
-# exporters.export(result, "result.stl")
+exporters.export(result, "result.stl")

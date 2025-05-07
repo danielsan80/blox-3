@@ -41,3 +41,6 @@ class Vertices:
     def right(self, vertex_pos: VertexPos) -> Point:
         right_vertex_pos = self._right_map()[vertex_pos]
         return self.get(right_vertex_pos)
+
+    def to_list(self) -> list[Point]:
+        return [self.a, self.b, self.c]
