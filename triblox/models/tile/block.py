@@ -24,10 +24,10 @@ mosaic = (
     .add(Tile(0, 1))
     .add(Tile(-1, 1))
     .add(Tile(-1, 0))
-    .add(Tile(0, -1))
-    .add(Tile(1, -1))
-    .add(Tile(-1, -1))
-    .add(Tile(-2, 0))
+#     .add(Tile(0, -1))
+#     .add(Tile(1, -1))
+#     .add(Tile(-1, -1))
+#     .add(Tile(-2, 0))
 )
 
 # mosaic = (
