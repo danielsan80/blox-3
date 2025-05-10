@@ -5,8 +5,8 @@ sys.path.append("src/")
 from dataclasses import dataclass, field
 from typing import Dict, Tuple
 
+from triblox.geometry.Point import Point
 from triblox.helper.util import sin60
-from triblox.point.Point import Point
 from triblox.tile.Tile import Tile
 from triblox.tile.VertexPos import VertexPos
 from triblox.vertex.VertexHex import VertexHex

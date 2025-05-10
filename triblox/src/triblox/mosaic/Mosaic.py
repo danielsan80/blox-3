@@ -79,3 +79,15 @@ class Mosaic:
                 vertex = vertex.mark_placed(key)
 
         return vertex
+
+    def move(self, x: int, y: int) -> "Mosaic":
+        mosaic = Mosaic()
+        first = True
+        for tile in self.tiles.values():
+            if first and not tile.direction == tile.move(x, y).direction:
+                raise ValueError("You cannot change the tiles direction")
+
+            first = False
+            mosaic = mosaic.add(tile.move(x, y))
+
+        return mosaic

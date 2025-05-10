@@ -6,9 +6,7 @@ from dataclasses import dataclass
 
 from cadquery import Sketch, Workplane
 
-from triblox.block.functions import h
-from triblox.config import clr, ext, h_clr, h_cut, wall_w, base_hole_margin
-from triblox.helper.util import normalize_float, sin30
+from triblox.config import base_hole_margin, clr, ext, wall_w
 from triblox.mosaic.Mosaic import Mosaic
 from triblox.mosaic.PlacedTile import PlacedTile
 
@@ -30,13 +28,22 @@ class BaseHoleVoid:
         triangle = Sketch().polygon(
             [
                 placed_tile.vertices.a.point()
-                .move(placed_tile.tile.incenter, clr*2 + wall_w*2 + base_hole_margin*2 )
+                .move(
+                    placed_tile.tile.incenter,
+                    clr * 2 + wall_w * 2 + base_hole_margin * 2,
+                )
                 .to_tuple(),
                 placed_tile.vertices.b.point()
-                .move(placed_tile.tile.incenter, clr*2 + wall_w*2 + base_hole_margin*2)
+                .move(
+                    placed_tile.tile.incenter,
+                    clr * 2 + wall_w * 2 + base_hole_margin * 2,
+                )
                 .to_tuple(),
                 placed_tile.vertices.c.point()
-                .move(placed_tile.tile.incenter, clr*2 + wall_w*2 + base_hole_margin*2)
+                .move(
+                    placed_tile.tile.incenter,
+                    clr * 2 + wall_w * 2 + base_hole_margin * 2,
+                )
                 .to_tuple(),
             ]
         )
@@ -49,4 +56,3 @@ class BaseHoleVoid:
         )
 
         return result
-

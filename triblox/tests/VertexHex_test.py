@@ -5,7 +5,7 @@ from triblox.config import side
 
 from triblox.tile.Tile import Tile
 from triblox.tile.Direction import Direction
-from triblox.point.Point import Point
+from triblox.geometry.Point import Point
 from triblox.helper.util import sin60
 from triblox.tile.Coord import Coord
 from triblox.vertex.VertexHex import VertexHex

@@ -8,7 +8,7 @@ from triblox.config import side
 from triblox.tile.Tile import Tile
 from triblox.mosaic.Mosaic import Mosaic
 from triblox.tile.Direction import Direction
-from triblox.point.Point import Point
+from triblox.geometry.Point import Point
 from triblox.helper.util import sin60
 from triblox.tile.Coord import Coord
 from triblox.vertex.VertexHex import VertexHex
@@ -226,3 +226,31 @@ def test_tile_vertice_offset_none():
     assert mosaic.placed_tile(0,0).vertices.a.moved_points(clr) == [Point(0.5,sin60)]
     assert mosaic.placed_tile(0,0).vertices.b.moved_points(clr) == [Point(side-0.5,sin60)]
     assert mosaic.placed_tile(0,0).vertices.c.moved_points(clr) == [Point(side/2,side*sin60)]
+
+
+def test_move_Mosaic():
+    mosaic = (
+        Mosaic()
+        .add(Tile(0,0))
+        .add(Tile(1,0))
+        .add(Tile(-1,0))
+        .add(Tile(-1,1))
+        .add(Tile(0,1))
+        .add(Tile(1,1))
+    )
+
+    moved_mosaic = (
+        Mosaic()
+        .add(Tile(2,2))
+        .add(Tile(3,2))
+        .add(Tile(1,2))
+        .add(Tile(1,3))
+        .add(Tile(2,3))
+        .add(Tile(3,3))
+    )
+
+    assert moved_mosaic == mosaic.move(2,2)
+
+    with pytest.raises(ValueError, match=re.escape(f"You cannot change the tiles direction")):
+        mosaic.move(1,0)
+

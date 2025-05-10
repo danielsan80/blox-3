@@ -14,3 +14,5 @@ h_clr = 0.15
 
 base_hole_margin = 0.8
 base_hole_d = 0.8
+
+h_grid_fix = -0.3
