@@ -6,7 +6,7 @@ from dataclasses import dataclass
 
 from cadquery import Sketch, Workplane
 
-from triblox.config import ext
+from triblox.config import taper_h
 from triblox.helper.util import sin30
 from triblox.mosaic.Mosaic import Mosaic
 from triblox.mosaic.PlacedTile import PlacedTile
@@ -26,33 +26,16 @@ class FineGridVoid:
         return result
 
     def _tile_void(self, placed_tile: PlacedTile) -> Workplane:
-        points = []
-        points += [placed_tile.vertices.a.point()]
-        points += [placed_tile.vertices.b.point()]
-        points += [placed_tile.vertices.c.point()]
-
+        points = placed_tile.vertices.original_points()
         points = [point.to_tuple() for point in points]
-
         up = Sketch().polygon(points)
 
-        points = [
-            placed_tile.vertices.a.point().move(
-                placed_tile.tile.incenter, ext * sin30 * 2
-            ),
-            placed_tile.vertices.b.point().move(
-                placed_tile.tile.incenter, ext * sin30 * 2
-            ),
-            placed_tile.vertices.c.point().move(
-                placed_tile.tile.incenter, ext * sin30 * 2
-            ),
-        ]
-
+        points = placed_tile.vertices.centered_points(taper_h * sin30)
         points = [point.to_tuple() for point in points]
-
         down = Sketch().polygon(points)
 
         wp_up = Workplane("XY").placeSketch(up)
 
-        wp_down = Workplane("XY").transformed(offset=(0, 0, -ext)).placeSketch(down)
+        wp_down = Workplane("XY").transformed(offset=(0, 0, -taper_h)).placeSketch(down)
 
         return wp_up.add(wp_down).loft(combine=True)

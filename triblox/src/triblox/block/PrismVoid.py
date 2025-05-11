@@ -7,7 +7,7 @@ from dataclasses import dataclass
 from cadquery import Sketch, Workplane
 
 from triblox.block.functions import h
-from triblox.config import clr, ext, wall_w
+from triblox.config import clr, taper_h, wall_w
 from triblox.helper.util import normalize_float
 from triblox.mosaic.Mosaic import Mosaic
 from triblox.mosaic.PlacedTile import PlacedTile
@@ -32,18 +32,13 @@ class PrismVoid:
         return result
 
     def _tile_prism_void(self, placed_tile: PlacedTile) -> Workplane:
-        points = []
-        points += placed_tile.vertices.a.moved_points(clr + wall_w)
-        points += placed_tile.vertices.b.moved_points(clr + wall_w)
-        points += placed_tile.vertices.c.moved_points(clr + wall_w)
-
+        points = placed_tile.vertices.offset_points(clr + wall_w)
         points = [point.to_tuple() for point in points]
-
         triangle = Sketch().polygon(points)
 
         return (
             Workplane("XY")
             .placeSketch(triangle)
-            .extrude(h(self.h) - ext - clr - wall_w)
+            .extrude(h(self.h) - taper_h - clr - wall_w)
             .translate((0, 0, wall_w))
         )

@@ -39,7 +39,7 @@ def test_create_Vertex_for_center_offset():
 
     assert vertex.offset() == VertexOffset.CENTER
     assert vertex.point() == tile.vertices.c
-    assert vertex.moved_points(clr) == [tile.vertices.c.move(tile.incenter, clr*2)]
+    assert vertex.offset_points(clr) == [tile.vertices.c.move(tile.incenter, clr*2)]
 
 
 def test_create_Vertex_for_left_offset():
@@ -64,7 +64,7 @@ def test_create_Vertex_for_left_offset():
 
     assert vertex.offset() == VertexOffset.LEFT
     assert vertex.point() == tile.vertices.c
-    assert vertex.moved_points(clr) == [tile.vertices.c.move(tile.vertices.a, 1)]
+    assert vertex.offset_points(clr) == [tile.vertices.c.move(tile.vertices.a, 1)]
 
 def test_create_Vertex_for_right_offset():
     clr = sin60
@@ -88,7 +88,7 @@ def test_create_Vertex_for_right_offset():
 
     assert vertex.offset() == VertexOffset.RIGHT
     assert vertex.point() == tile.vertices.c
-    assert vertex.moved_points(clr) == [tile.vertices.c.move(tile.vertices.b, 1)]
+    assert vertex.offset_points(clr) == [tile.vertices.c.move(tile.vertices.b, 1)]
 
 def test_create_Vertex_for_split_offset():
     clr = sin60
@@ -115,11 +115,11 @@ def test_create_Vertex_for_split_offset():
 
     assert vertex.offset() == VertexOffset.SPLIT
     assert vertex.point() == tile.vertices.c
-    assert vertex.moved_points(clr) == [
+    assert vertex.offset_points(clr) == [
         tile.vertices.c.move(tile.vertices.b, 1),
         tile.vertices.c.move(tile.vertices.a, 1),
     ]
-    assert not vertex.moved_points(clr) == [
+    assert not vertex.offset_points(clr) == [
         tile.vertices.c.move(tile.vertices.a, 1),
         tile.vertices.c.move(tile.vertices.b, 1),
     ]
@@ -153,7 +153,7 @@ def test_create_Vertex_for_none_offset():
 
     assert vertex.offset() == VertexOffset.NONE
     assert vertex.point() == tile.vertices.c
-    assert vertex.moved_points(clr) == [
+    assert vertex.offset_points(clr) == [
         tile.vertices.c
     ]
 

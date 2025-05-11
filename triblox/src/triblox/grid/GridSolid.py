@@ -6,8 +6,7 @@ from dataclasses import dataclass
 
 from cadquery import Sketch, Workplane
 
-from triblox.config import clr, ext, h_clr, h_grid_fix
-from triblox.helper.util import sin30
+from triblox.config import clr, h_clr, h_grid_fix, taper_h
 from triblox.mosaic.Mosaic import Mosaic
 from triblox.mosaic.PlacedTile import PlacedTile
 
@@ -27,49 +26,29 @@ class GridSolid:
         return result
 
     def _tile_base_solid(self, placed_tile: PlacedTile) -> Workplane:
-        points = []
-        points += placed_tile.vertices.a.moved_points(clr)
-        points += placed_tile.vertices.b.moved_points(clr)
-        points += placed_tile.vertices.c.moved_points(clr)
-
+        points = placed_tile.vertices.offset_points(clr)
         points = [point.to_tuple() for point in points]
 
         triangle = Sketch().polygon(points)
         return (
             Workplane("XY")
             .placeSketch(triangle)
-            .extrude(ext - h_clr + h_grid_fix)
-            .translate((0, 0, -ext))
+            .extrude(taper_h - h_clr + h_grid_fix)
+            .translate((0, 0, -taper_h))
         )
 
-    def _tile_base_void(self, placed_tile: PlacedTile) -> Workplane:
-        points = []
-        points += [placed_tile.vertices.a.point()]
-        points += [placed_tile.vertices.b.point()]
-        points += [placed_tile.vertices.c.point()]
 
-        points = [point.to_tuple() for point in points]
-
-        up = Sketch().polygon(points)
-
-        points = [
-            placed_tile.vertices.a.point().move(
-                placed_tile.tile.incenter, ext * sin30 * 2
-            ),
-            placed_tile.vertices.b.point().move(
-                placed_tile.tile.incenter, ext * sin30 * 2
-            ),
-            placed_tile.vertices.c.point().move(
-                placed_tile.tile.incenter, ext * sin30 * 2
-            ),
-        ]
-
-        points = [point.to_tuple() for point in points]
-
-        down = Sketch().polygon(points)
-
-        wp_up = Workplane("XY").placeSketch(up)
-
-        wp_down = Workplane("XY").transformed(offset=(0, 0, -ext)).placeSketch(down)
-
-        return wp_up.add(wp_down).loft(combine=True)
+#     def _tile_base_void(self, placed_tile: PlacedTile) -> Workplane:
+#         points = placed_tile.vertices.original_points()
+#         points = [point.to_tuple() for point in points]
+#         up = Sketch().polygon(points)
+#
+#         points = placed_tile.vertices.centered_points(taper_h * sin30)
+#         points = [point.to_tuple() for point in points]
+#         down = Sketch().polygon(points)
+#
+#         wp_up = Workplane("XY").placeSketch(up)
+#
+#         wp_down = Workplane("XY").transformed(offset=(0, 0, -taper_h)).placeSketch(down)
+#
+#         return wp_up.add(wp_down).loft(combine=True)

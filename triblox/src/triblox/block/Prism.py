@@ -32,12 +32,8 @@ class Prism:
         return result
 
     def _tile_prism(self, placed_tile) -> Workplane:
-        points = []
-        points += placed_tile.vertices.a.moved_points(clr)
-        points += placed_tile.vertices.b.moved_points(clr)
-        points += placed_tile.vertices.c.moved_points(clr)
-
+        points = placed_tile.vertices.offset_points(clr)
         points = [point.to_tuple() for point in points]
-
         triangle = Sketch().polygon(points)
+
         return Workplane("XY").placeSketch(triangle).extrude(h(self.h))

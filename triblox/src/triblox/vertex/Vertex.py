@@ -78,7 +78,7 @@ class Vertex:
     def point(self) -> Point:
         return self.tile.vertices.get(self.pos)
 
-    def moved_points(self, value: float) -> Tuple[Point]:
+    def offset_points(self, value: float) -> Tuple[Point]:
         point = self.tile.vertices.get(self.pos)
         if self.offset() == VertexOffset.CENTER:
             destination = self.tile.incenter
@@ -98,3 +98,11 @@ class Vertex:
             ]
         if self.offset() == VertexOffset.NONE:
             return [point]
+
+    def original_points(self) -> Tuple[Point]:
+        return [self.point()]
+
+    def centered_points(self, value: float) -> Tuple[Point]:
+        point = self.tile.vertices.get(self.pos)
+        destination = self.tile.incenter
+        return [point.move(destination, value * 2)]

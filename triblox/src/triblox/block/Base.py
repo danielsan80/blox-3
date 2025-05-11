@@ -6,7 +6,7 @@ from dataclasses import dataclass
 
 from cadquery import Sketch, Workplane
 
-from triblox.config import clr, ext
+from triblox.config import clr, taper_h
 from triblox.helper.util import sin30
 from triblox.mosaic.Mosaic import Mosaic
 from triblox.mosaic.PlacedTile import PlacedTile
@@ -26,38 +26,19 @@ class Base:
         return result
 
     def _tile_base(self, placed_tile: PlacedTile) -> Workplane:
-        base_up = Sketch().polygon(
-            [
-                placed_tile.vertices.a.point()
-                .move(placed_tile.tile.incenter, clr * 2)
-                .to_tuple(),
-                placed_tile.vertices.b.point()
-                .move(placed_tile.tile.incenter, clr * 2)
-                .to_tuple(),
-                placed_tile.vertices.c.point()
-                .move(placed_tile.tile.incenter, clr * 2)
-                .to_tuple(),
-            ]
-        )
 
-        base_down = Sketch().polygon(
-            [
-                placed_tile.vertices.a.point()
-                .move(placed_tile.tile.incenter, clr * 2 + ext * sin30 * 2)
-                .to_tuple(),
-                placed_tile.vertices.b.point()
-                .move(placed_tile.tile.incenter, clr * 2 + ext * sin30 * 2)
-                .to_tuple(),
-                placed_tile.vertices.c.point()
-                .move(placed_tile.tile.incenter, clr * 2 + ext * sin30 * 2)
-                .to_tuple(),
-            ]
-        )
+        points = placed_tile.vertices.centered_points(clr)
+        points = [point.to_tuple() for point in points]
+        base_up = Sketch().polygon(points)
+
+        points = placed_tile.vertices.centered_points(clr + taper_h * sin30)
+        points = [point.to_tuple() for point in points]
+        base_down = Sketch().polygon(points)
 
         wp_up = Workplane("XY").placeSketch(base_up)
 
         wp_down = (
-            Workplane("XY").transformed(offset=(0, 0, -ext)).placeSketch(base_down)
+            Workplane("XY").transformed(offset=(0, 0, -taper_h)).placeSketch(base_down)
         )
 
         return wp_up.add(wp_down).loft(combine=True)

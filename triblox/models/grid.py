@@ -1,11 +1,11 @@
 import sys
-sys.path.append('../../src/')
+sys.path.append('../src/')
 
 from cadquery import Workplane, Sketch, Vector, Location, exporters
 from pprint import pprint
 
 from triblox.tile.Tile import Tile
-from triblox.config import clr, ext, h_clr
+from triblox.config import clr, taper_h, h_clr
 from triblox.block.functions import h
 from triblox.mosaic.Mosaic import Mosaic
 from triblox.helper.util import sin30
@@ -115,5 +115,5 @@ result = (
 )
 
 show_object(result)
-# exporters.export(result, 'result.stl')
+# exporters.export(result, 'grid.stl')
 

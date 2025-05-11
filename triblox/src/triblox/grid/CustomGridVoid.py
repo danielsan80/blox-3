@@ -7,7 +7,7 @@ from typing import Tuple
 
 from cadquery import Sketch, Workplane
 
-from triblox.config import ext
+from triblox.config import taper_h
 from triblox.helper.util import sin30
 from triblox.mosaic.Mosaic import Mosaic
 from triblox.mosaic.PlacedTile import PlacedTile
@@ -31,27 +31,16 @@ class CustomGridVoid:
         return result
 
     def _tile_grid_void(self, placed_tile: PlacedTile) -> Workplane:
-        clr1 = 0
-        points = []
-        points += placed_tile.vertices.a.moved_points(clr1)
-        points += placed_tile.vertices.b.moved_points(clr1)
-        points += placed_tile.vertices.c.moved_points(clr1)
-
+        points = placed_tile.vertices.original_points()
         points = [point.to_tuple() for point in points]
-
         up = Sketch().polygon(points)
 
-        points = []
-        points += placed_tile.vertices.a.moved_points(ext * sin30)
-        points += placed_tile.vertices.b.moved_points(ext * sin30)
-        points += placed_tile.vertices.c.moved_points(ext * sin30)
-
+        points = placed_tile.vertices.offset_points(taper_h * sin30)
         points = [point.to_tuple() for point in points]
-
         down = Sketch().polygon(points)
 
         wp_up = Workplane("XY").placeSketch(up)
 
-        wp_down = Workplane("XY").transformed(offset=(0, 0, -ext)).placeSketch(down)
+        wp_down = Workplane("XY").transformed(offset=(0, 0, -taper_h)).placeSketch(down)
 
         return wp_up.add(wp_down).loft(combine=True)

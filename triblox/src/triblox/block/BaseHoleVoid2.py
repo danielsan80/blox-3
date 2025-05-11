@@ -6,13 +6,13 @@ from dataclasses import dataclass
 
 from cadquery import Sketch, Workplane
 
-from triblox.config import base_hole_margin, clr, ext, wall_w
+from triblox.config import base_hole_margin, clr, taper_h, wall_w
 from triblox.mosaic.Mosaic import Mosaic
 from triblox.mosaic.PlacedTile import PlacedTile
 
 
 @dataclass(frozen=True)
-class BaseHoleVoid:
+class BaseHoleVoid2:
     mosaic: Mosaic
 
     def get(self) -> Workplane:
@@ -25,34 +25,15 @@ class BaseHoleVoid:
 
     def _tile_base_hole_void(self, placed_tile: PlacedTile) -> Workplane:
 
-        triangle = Sketch().polygon(
-            [
-                placed_tile.vertices.a.point()
-                .move(
-                    placed_tile.tile.incenter,
-                    clr * 2 + wall_w * 2 + base_hole_margin * 2,
-                )
-                .to_tuple(),
-                placed_tile.vertices.b.point()
-                .move(
-                    placed_tile.tile.incenter,
-                    clr * 2 + wall_w * 2 + base_hole_margin * 2,
-                )
-                .to_tuple(),
-                placed_tile.vertices.c.point()
-                .move(
-                    placed_tile.tile.incenter,
-                    clr * 2 + wall_w * 2 + base_hole_margin * 2,
-                )
-                .to_tuple(),
-            ]
-        )
+        points = placed_tile.vertices.centered_points(clr + wall_w + base_hole_margin)
+        points = [point.to_tuple() for point in points]
+        triangle = Sketch().polygon(points)
 
         result = (
             Workplane("XY")
             .placeSketch(triangle)
             .extrude(wall_w)
-            .translate((0, 0, -ext))
+            .translate((0, 0, -taper_h))
         )
 
         return result

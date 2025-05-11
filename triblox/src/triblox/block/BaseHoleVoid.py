@@ -6,7 +6,7 @@ from dataclasses import dataclass
 
 from cadquery import Sketch, Workplane
 
-from triblox.config import base_hole_d, ext, side, wall_w
+from triblox.config import base_hole_d, side, taper_h, wall_w
 from triblox.mosaic.Mosaic import Mosaic
 from triblox.mosaic.PlacedTile import PlacedTile
 
@@ -27,7 +27,6 @@ class BaseHoleVoid:
 
         tile = placed_tile.tile
 
-        print(f"Tile: {tile}")
         adjacent_tiles = tile.adjacent_tiles.to_list()
 
         middle_points = []
@@ -47,9 +46,9 @@ class BaseHoleVoid:
             hole = (
                 Workplane("XY")
                 .placeSketch(Sketch().circle(base_hole_d / 2))
-                .extrude(ext + wall_w)
+                .extrude(taper_h + wall_w)
                 .translate(middle_point.to_tuple() + (0,))
             )
             result = result.union(hole)
 
-        return result.translate((0, 0, -ext))
+        return result.translate((0, 0, -taper_h))
