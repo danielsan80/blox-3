@@ -6,7 +6,7 @@ from dataclasses import dataclass
 
 from cadquery import Sketch, Workplane
 
-from triblox.config import clr, h_clr, h_grid_fix, taper_h
+from triblox.config import clr, h_clr, h_grid_fix, taper_h, stub_h
 from triblox.mosaic.Mosaic import Mosaic
 from triblox.mosaic.PlacedTile import PlacedTile
 
@@ -20,12 +20,12 @@ class GridSolid:
         result = Workplane("XY")
 
         for placed_tile in self.mosaic.placed_tiles.values():
-            result = result.union(self._tile_base_solid(placed_tile))
+            result = result.union(self._solid(placed_tile))
         #             result = result.cut(self._tile_base_void(placed_tile))
 
         return result
 
-    def _tile_base_solid(self, placed_tile: PlacedTile) -> Workplane:
+    def _solid(self, placed_tile: PlacedTile) -> Workplane:
         points = placed_tile.vertices.offset_points(clr)
         points = [point.to_tuple() for point in points]
 
@@ -33,8 +33,8 @@ class GridSolid:
         return (
             Workplane("XY")
             .placeSketch(triangle)
-            .extrude(taper_h - h_clr + h_grid_fix)
-            .translate((0, 0, -taper_h))
+            .extrude(taper_h + stub_h - h_clr + h_grid_fix)
+            .translate((0, 0, -taper_h-stub_h))
         )
 
 

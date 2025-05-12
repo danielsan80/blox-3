@@ -18,7 +18,7 @@ from triblox.block.BaseVoid import BaseVoid
 from triblox.block.BaseHoleVoid import BaseHoleVoid
 from triblox.block.BaseHoleVoid2 import BaseHoleVoid2
 
-hn = 0.5
+hn = 1.5
 
 mosaic = (
     Mosaic()
@@ -33,7 +33,7 @@ mosaic = (
 base = Base(mosaic)
 prism = Prism(mosaic,hn)
 topVoid = TopVoid(mosaic, hn)
-# prismVoid = PrismVoid(mosaic, hn)
+prismVoid = PrismVoid(mosaic, hn)
 baseVoid = BaseVoid(mosaic)
 # baseHoleVoid = BaseHoleVoid(mosaic)
 # baseHoleVoid2 = BaseHoleVoid2(mosaic)
@@ -43,8 +43,8 @@ result = (
     .union(base.get())
     .union(prism.get())
     .cut(topVoid.get())
-#     .cut(prismVoid.get())
-#     .cut(baseVoid.get())
+    .cut(prismVoid.get())
+    .cut(baseVoid.get())
 #     .cut(baseHoleVoid.get())
 #     .cut(baseHoleVoid2.get())
 #     .union(base.get().translate((0, 0, h(hn))))
@@ -53,4 +53,4 @@ result = (
 
 
 show_object(result)
-# exporters.export(result, "block.stl")
+exporters.export(result, "block.stl")

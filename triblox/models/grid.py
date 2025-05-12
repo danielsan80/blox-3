@@ -109,11 +109,11 @@ custom_grid_void = (
 result = (
     Workplane("XY")
     .union(grid_solid.get())
-    .cut(custom_grid_void.get())
-#     .cut(fine_grid_void.get())
+#     .cut(custom_grid_void.get())
+    .cut(fine_grid_void.get())
 #     .union(base.get())
 )
 
 show_object(result)
-# exporters.export(result, 'grid.stl')
+exporters.export(result, 'grid.stl')
 

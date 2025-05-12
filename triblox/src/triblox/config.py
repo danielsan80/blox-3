@@ -8,9 +8,9 @@ h_step = 10
 h_fix = 0.2
 h_cut = 0.3
 taper_h = 1.5
-stub_h = 1
+stub_h = 0.5
 wall_w = 0.8
-clr = 0.15
+clr = 0.25
 h_clr = 0.15
 
 base_hole_margin = 0.8

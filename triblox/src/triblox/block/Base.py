@@ -6,7 +6,7 @@ from dataclasses import dataclass
 
 from cadquery import Sketch, Workplane
 
-from triblox.config import clr, taper_h
+from triblox.config import clr, taper_h, stub_h
 from triblox.helper.util import sin30
 from triblox.mosaic.Mosaic import Mosaic
 from triblox.mosaic.PlacedTile import PlacedTile
@@ -21,24 +21,38 @@ class Base:
         result = Workplane("XY")
 
         for placed_tile in self.mosaic.placed_tiles.values():
-            result = result.union(self._tile_base(placed_tile))
+            result = result.union(self._taper(placed_tile))
+            result = result.union(self._stub(placed_tile))
 
         return result
 
-    def _tile_base(self, placed_tile: PlacedTile) -> Workplane:
+    def _taper(self, placed_tile: PlacedTile) -> Workplane:
 
         points = placed_tile.vertices.centered_points(clr)
         points = [point.to_tuple() for point in points]
-        base_up = Sketch().polygon(points)
+        base_top = Sketch().polygon(points)
 
         points = placed_tile.vertices.centered_points(clr + taper_h * sin30)
         points = [point.to_tuple() for point in points]
-        base_down = Sketch().polygon(points)
+        base_bottom = Sketch().polygon(points)
 
-        wp_up = Workplane("XY").placeSketch(base_up)
+        wp_top = Workplane("XY").placeSketch(base_top)
 
-        wp_down = (
-            Workplane("XY").transformed(offset=(0, 0, -taper_h)).placeSketch(base_down)
+        wp_bottom = (
+            Workplane("XY").transformed(offset=(0, 0, -taper_h)).placeSketch(base_bottom)
         )
 
-        return wp_up.add(wp_down).loft(combine=True)
+        return wp_top.add(wp_bottom).loft(combine=True)
+
+    def _stub(self, placed_tile: PlacedTile) -> Workplane:
+
+        points = placed_tile.vertices.centered_points(clr + taper_h * sin30)
+        points = [point.to_tuple() for point in points]
+        base_bottom = Sketch().polygon(points)
+
+        return (
+            Workplane("XY")
+            .transformed(offset=(0, 0, -taper_h-stub_h))
+            .placeSketch(base_bottom)
+            .extrude(stub_h)
+        )
