@@ -27,7 +27,7 @@ class BaseVoid:
 
     def _taper_void(self, placed_tile: PlacedTile) -> Workplane:
 
-        points = placed_tile.vertices.centered_points(clr + wall_w + wall_w*sin30)
+        points = placed_tile.vertices.centered_points(clr + wall_w)
         points = [point.to_tuple() for point in points]
         base_top = Sketch().polygon(points)
 
@@ -35,10 +35,16 @@ class BaseVoid:
         points = [point.to_tuple() for point in points]
         base_bottom = Sketch().polygon(points)
 
-        wp_top = Workplane("XY").placeSketch(base_top)
+        wp_top = (
+            Workplane("XY")
+            .transformed(offset=(0, 0, wall_w))
+            .placeSketch(base_top)
+        )
 
         wp_bottom = (
-            Workplane("XY").transformed(offset=(0, 0, -taper_h+wall_w)).placeSketch(base_bottom)
+            Workplane("XY")
+            .transformed(offset=(0, 0, -taper_h+wall_w))
+            .placeSketch(base_bottom)
         )
 
         return wp_top.add(wp_bottom).loft(combine=True)
