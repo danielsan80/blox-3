@@ -18,3 +18,12 @@ def test_it_can_be_converted_to_a_tuple():
     point = Point(1, 2)
     assert point.to_tuple() == (1, 2)
 
+def test_it_can_be_rotated_around_an_origin():
+    origin = Point(0, 0)
+    point = Point(1, 0)
+
+    assert point.rotate(origin, 90) == Point(0, 1)
+    assert point.rotate(origin, -90) == Point(0, -1)
+    assert point.rotate(origin, 180) == Point(-1, 0)
+    assert point.rotate(origin, 360) == Point(1, 0)
+

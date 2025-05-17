@@ -13,16 +13,6 @@ from triblox.tile.Vertices import Vertices
 
 
 @dataclass(frozen=True)
-class AdjacentTiles:
-    ab: "Tile"
-    bc: "Tile"
-    ca: "Tile"
-
-    def to_list(self) -> list["Tile"]:
-        return [self.ab, self.bc, self.ca]
-
-
-@dataclass(frozen=True)
 class Tile:
     x: int
     y: int
@@ -62,7 +52,9 @@ class Tile:
         )
 
     @property
-    def adjacent_tiles(self) -> AdjacentTiles:
+    def adjacent_tiles(self) -> "AdjacentTiles":
+        from triblox.tile.AdjacentTiles import AdjacentTiles
+
         if self.direction.is_up():
             ab = self.down()
             bc = self.right()
@@ -100,3 +92,6 @@ class Tile:
 
     def move(self, x: int, y: int) -> "Tile":
         return Tile(self.x + x, self.y + y)
+
+    def is_equal(self, tile: "Tile") -> bool:
+        return self.x == tile.x and self.y == tile.y

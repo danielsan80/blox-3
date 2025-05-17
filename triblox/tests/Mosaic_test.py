@@ -4,7 +4,7 @@ sys.path.append('src/')
 import pytest
 import re
 
-from triblox.config import side
+from triblox.config import side, fix
 from triblox.tile.Tile import Tile
 from triblox.mosaic.Mosaic import Mosaic
 from triblox.tile.Direction import Direction
@@ -18,8 +18,6 @@ from triblox.mosaic.PlacedTile import PlacedTile
 from triblox.vertex.VertexOffset import VertexOffset
 from triblox.vertex.Vertex import Vertex
 from triblox.vertex.VertexHexKey import VertexHexKey
-
-
 
 
 def test_empty_Mosaic():
@@ -121,7 +119,7 @@ def test_get_VertexHex():
     assert not mosaic.contains(hex.opposite)
 
 
-def test_tile_vertice_offset_center():
+def test_tile_vertex_offset_center():
     clr = sin60
     tile = Tile(0, 0)
     mosaic = Mosaic().add(tile)
@@ -134,7 +132,7 @@ def test_tile_vertice_offset_center():
     assert mosaic.placed_tile(0,0).vertices.b.offset_points(clr) == [Point(side-1.5,sin60)]
     assert mosaic.placed_tile(0,0).vertices.c.offset_points(clr) == [Point(side/2,side*sin60-sin60*2)]
 
-def test_tile_vertice_offset_left_and_right():
+def test_tile_vertex_offset_left_and_right():
     clr = sin60
     tile = Tile(0, 0)
     mosaic = (

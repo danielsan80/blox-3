@@ -7,7 +7,7 @@ from triblox.tile.Tile import Tile
 from triblox.tile.Direction import Direction
 from triblox.geometry.Point import Point
 from triblox.helper.util import sin60
-from triblox.tile.Tile import AdjacentTiles
+from triblox.tile.AdjacentTiles import AdjacentTiles
 from triblox.tile.Coord import Coord
 import pytest
 import re

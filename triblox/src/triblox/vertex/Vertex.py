@@ -79,24 +79,25 @@ class Vertex:
         return self.tile.vertices.get(self.pos)
 
     def offset_points(self, value: float) -> Tuple[Point]:
+        offset = self.offset()
         point = self.tile.vertices.get(self.pos)
-        if self.offset() == VertexOffset.CENTER:
+        if offset == VertexOffset.CENTER:
             destination = self.tile.incenter
             return [point.move(destination, value * 2)]
-        if self.offset() == VertexOffset.LEFT:
+        if offset == VertexOffset.LEFT:
             destination = self.tile.vertices.left(self.pos)
             return [point.move(destination, value / sin60)]
-        if self.offset() == VertexOffset.RIGHT:
+        if offset == VertexOffset.RIGHT:
             destination = self.tile.vertices.right(self.pos)
             return [point.move(destination, value / sin60)]
-        if self.offset() == VertexOffset.SPLIT:
+        if offset == VertexOffset.SPLIT:
             destination1 = self.tile.vertices.right(self.pos)
             destination2 = self.tile.vertices.left(self.pos)
             return [
                 point.move(destination1, value / sin60),
                 point.move(destination2, value / sin60),
             ]
-        if self.offset() == VertexOffset.NONE:
+        if offset == VertexOffset.NONE:
             return [point]
 
     def original_points(self) -> Tuple[Point]:

@@ -15,6 +15,9 @@ class PlacedVertices:
     b: Vertex
     c: Vertex
 
+    def to_list(self) -> list[Vertex]:
+        return [self.a, self.b, self.c]
+
     def offset_points(self, value: float) -> Tuple[Point]:
         points = []
         points += self.a.offset_points(value)
