@@ -6,7 +6,7 @@ from dataclasses import dataclass
 
 from cadquery import Sketch, Workplane
 
-from triblox.config import taper_h, stub_h
+from triblox.config import stub_h, taper_h
 from triblox.helper.util import sin30
 from triblox.mosaic.Mosaic import Mosaic
 from triblox.mosaic.PlacedTile import PlacedTile
@@ -48,7 +48,7 @@ class FineGridVoid:
 
         return (
             Workplane("XY")
-            .transformed(offset=(0, 0, -taper_h-stub_h))
+            .transformed(offset=(0, 0, -taper_h - stub_h))
             .placeSketch(down)
             .extrude(stub_h)
         )

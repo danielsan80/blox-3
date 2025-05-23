@@ -6,7 +6,7 @@ from dataclasses import dataclass
 
 from cadquery import Sketch, Workplane
 
-from triblox.config import clr, taper_h, wall_w, stub_h
+from triblox.config import clr, stub_h, taper_h, wall_w
 from triblox.helper.util import sin30
 from triblox.mosaic.Mosaic import Mosaic
 from triblox.mosaic.PlacedTile import PlacedTile
@@ -31,19 +31,17 @@ class BaseVoid:
         points = [point.to_tuple() for point in points]
         base_top = Sketch().polygon(points)
 
-        points = placed_tile.vertices.centered_points(clr + wall_w + taper_h * sin30  )
+        points = placed_tile.vertices.centered_points(clr + wall_w + taper_h * sin30)
         points = [point.to_tuple() for point in points]
         base_bottom = Sketch().polygon(points)
 
         wp_top = (
-            Workplane("XY")
-            .transformed(offset=(0, 0, wall_w))
-            .placeSketch(base_top)
+            Workplane("XY").transformed(offset=(0, 0, wall_w)).placeSketch(base_top)
         )
 
         wp_bottom = (
             Workplane("XY")
-            .transformed(offset=(0, 0, -taper_h+wall_w))
+            .transformed(offset=(0, 0, -taper_h + wall_w))
             .placeSketch(base_bottom)
         )
 
@@ -57,7 +55,7 @@ class BaseVoid:
 
         return (
             Workplane("XY")
-            .transformed(offset=(0, 0, -taper_h-stub_h))
+            .transformed(offset=(0, 0, -taper_h - stub_h))
             .transformed(offset=(0, 0, wall_w))
             .placeSketch(base_bottom)
             .extrude(stub_h)

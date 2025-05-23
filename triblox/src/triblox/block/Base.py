@@ -6,7 +6,7 @@ from dataclasses import dataclass
 
 from cadquery import Sketch, Workplane
 
-from triblox.config import clr, taper_h, stub_h
+from triblox.config import clr, stub_h, taper_h
 from triblox.helper.util import sin30
 from triblox.mosaic.Mosaic import Mosaic
 from triblox.mosaic.PlacedTile import PlacedTile
@@ -39,7 +39,9 @@ class Base:
         wp_top = Workplane("XY").placeSketch(base_top)
 
         wp_bottom = (
-            Workplane("XY").transformed(offset=(0, 0, -taper_h)).placeSketch(base_bottom)
+            Workplane("XY")
+            .transformed(offset=(0, 0, -taper_h))
+            .placeSketch(base_bottom)
         )
 
         return wp_top.add(wp_bottom).loft(combine=True)
@@ -52,7 +54,7 @@ class Base:
 
         return (
             Workplane("XY")
-            .transformed(offset=(0, 0, -taper_h-stub_h))
+            .transformed(offset=(0, 0, -taper_h - stub_h))
             .placeSketch(base_bottom)
             .extrude(stub_h)
         )

@@ -3,16 +3,16 @@ import sys
 sys.path.append("../../src/")
 
 from dataclasses import dataclass
+from pprint import pprint
+from types import SimpleNamespace
 
 from cadquery import Sketch, Workplane
 
 from triblox.block.functions import h
-from triblox.config import clr, taper_h, wall_w, stub_h
-from triblox.helper.util import normalize_float, sin30, sin60
+from triblox.config import clr, stub_h, taper_h, wall_w
+from triblox.helper.util import normalize_float, sin30
 from triblox.mosaic.Mosaic import Mosaic
 from triblox.mosaic.PlacedTile import PlacedTile
-from pprint import pprint
-from types import SimpleNamespace
 
 
 @dataclass(frozen=True)
@@ -43,7 +43,7 @@ class PrismVoid:
         slope_top_o = taper_o
         back_o = slope_top_o - prism_o
         slope_bottom_o = slope_top_o - back_o
-        slope_bottom_v = back_o/sin30
+        slope_bottom_v = back_o / sin30
 
         return SimpleNamespace(
             taper_v=taper_v,
@@ -82,7 +82,9 @@ class PrismVoid:
 
         wp_bottom = (
             Workplane("XY")
-            .transformed(offset=(0, 0, h(self.h) - v.taper_v - v.stub_v - v.slope_bottom_v))
+            .transformed(
+                offset=(0, 0, h(self.h) - v.taper_v - v.stub_v - v.slope_bottom_v)
+            )
             .placeSketch(slope_bottom)
         )
 
@@ -116,7 +118,6 @@ class PrismVoid:
         reduce_v = v.taper_v + v.stub_v + v.slope_bottom_v
         void_h = h(self.h) - reduce_v - wall_w
 
-
         pprint(void_h)
 
         assert void_h > 0, "Height is too small for prism void"
@@ -147,4 +148,3 @@ class PrismVoid:
             .extrude(h(self.h) - reduce_v - wall_w)
             .translate((0, 0, wall_w))
         )
-

@@ -7,7 +7,7 @@ from dataclasses import dataclass
 from cadquery import Sketch, Workplane
 
 from triblox.block.functions import h
-from triblox.config import clr, h_clr, h_cut, taper_h, stub_h
+from triblox.config import clr, h_clr, h_cut, stub_h, taper_h
 from triblox.helper.util import normalize_float, sin30
 from triblox.mosaic.Mosaic import Mosaic
 from triblox.mosaic.PlacedTile import PlacedTile
@@ -49,9 +49,7 @@ class TopVoid:
         wp_up = Workplane("XY").placeSketch(base_up)
 
         wp_down = (
-            Workplane("XY")
-            .transformed(offset=(0, 0, - taper_v))
-            .placeSketch(base_down)
+            Workplane("XY").transformed(offset=(0, 0, -taper_v)).placeSketch(base_down)
         )
 
         return wp_up.add(wp_down).loft(combine=True)
@@ -65,7 +63,7 @@ class TopVoid:
 
         return (
             Workplane("XY")
-            .transformed(offset=(0, 0, - taper_v - stub_h))
+            .transformed(offset=(0, 0, -taper_v - stub_h))
             .placeSketch(base_down)
             .extrude(stub_h)
         )

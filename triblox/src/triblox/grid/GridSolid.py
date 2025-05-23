@@ -6,7 +6,7 @@ from dataclasses import dataclass
 
 from cadquery import Sketch, Workplane
 
-from triblox.config import clr, h_clr, h_grid_fix, taper_h, stub_h
+from triblox.config import clr, h_clr, h_grid_fix, stub_h, taper_h
 from triblox.mosaic.Mosaic import Mosaic
 from triblox.mosaic.PlacedTile import PlacedTile
 
@@ -34,7 +34,7 @@ class GridSolid:
             Workplane("XY")
             .placeSketch(triangle)
             .extrude(taper_h + stub_h - h_clr + h_grid_fix)
-            .translate((0, 0, -taper_h-stub_h))
+            .translate((0, 0, -taper_h - stub_h))
         )
 
 
