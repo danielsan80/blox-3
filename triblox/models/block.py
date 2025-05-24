@@ -16,7 +16,7 @@ from triblox.block.TopVoid import TopVoid
 from triblox.block.PrismVoid import PrismVoid
 from triblox.block.BaseVoid import BaseVoid
 from triblox.block.BaseHoleVoid import BaseHoleVoid
-from triblox.block.BaseHoleVoid2 import BaseHoleVoid2
+from triblox.block.BaseHoleOnEdgesVoid import BaseHoleOnEdgesVoid
 
 hn = 1.5
 
@@ -28,6 +28,25 @@ mosaic = (
     .add(Tile(0, 1))
     .add(Tile(-1, 1))
     .add(Tile(-1, 0))
+
+    .add(Tile(0, -1))
+    .add(Tile(1, -1))
+    .add(Tile(2, -1))
+#     .add(Tile(2, 0))
+#     .add(Tile(3, 0))
+#     .add(Tile(3, 1))
+#     .add(Tile(2, 1))
+#     .add(Tile(2, 2))
+#     .add(Tile(1, 2))
+#     .add(Tile(0, 2))
+#     .add(Tile(-1, 2))
+#     .add(Tile(-2, 2))
+#     .add(Tile(-2, 1))
+#     .add(Tile(-3, 1))
+#     .add(Tile(-3, 0))
+#     .add(Tile(-2, 0))
+#     .add(Tile(-2, -1))
+#     .add(Tile(-1, -1))
 )
 
 base = Base(mosaic)
@@ -35,8 +54,8 @@ prism = Prism(mosaic,hn)
 topVoid = TopVoid(mosaic, hn)
 prismVoid = PrismVoid(mosaic, hn)
 baseVoid = BaseVoid(mosaic)
-# baseHoleVoid = BaseHoleVoid(mosaic)
-# baseHoleVoid2 = BaseHoleVoid2(mosaic)
+baseHoleVoid = BaseHoleVoid(mosaic)
+baseHoleOnEdgesVoid = BaseHoleOnEdgesVoid(mosaic)
 
 result = (
     Workplane("XY")
@@ -45,8 +64,8 @@ result = (
     .cut(topVoid.get())
     .cut(prismVoid.get())
     .cut(baseVoid.get())
-#     .cut(baseHoleVoid.get())
-#     .cut(baseHoleVoid2.get())
+    .cut(baseHoleVoid.get())
+    .cut(baseHoleOnEdgesVoid.get())
 #     .union(base.get().translate((0, 0, h(hn))))
 #     .union(topVoid.get().translate((0, 0, 0.1)))
 )

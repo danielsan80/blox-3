@@ -80,7 +80,7 @@ class Bowl:
 
                 if adjacent_base_top_tiles:
                     for base_top_tile in adjacent_base_top_tiles:
-                        if self._common_points(top_tile, base_top_tile):
+                        if top_tile.common_points(base_top_tile):
                             result = self._add_vertex_overhang(
                                 result, top_tile, base_top_tile
                             )
@@ -113,23 +113,10 @@ class Bowl:
                 adjacent_tiles += [other_placed_tile]
         return adjacent_tiles
 
-    def _tile_points(self, placed_tile) -> list[tuple[float, float]]:
-        all_points = []
-        vertices = placed_tile.vertices.to_list()
-
-        for i in range(3):
-            vertex = vertices[i]
-            points = vertex.offset_points(clr)
-            if len(points) == 1:
-                next_vertex = vertices[(i + 1) % 3]
-                next_point = next_vertex.offset_points(clr)[0]
-                points += [points[0].move(next_point, fix)]
-
-            all_points += points
-
-        all_points = [point.to_tuple() for point in all_points]
-
-        return all_points
+    def _tile_points(self, placed_tile: PlacedTile) -> list[tuple[float, float]]:
+        points = placed_tile.vertices.offset_points(clr, to6=True)
+        points = [point.to_tuple() for point in points]
+        return points
 
     def _tile_points_on_edge(
         self, placed_tile: PlacedTile, edge_points: list[Point]
@@ -200,15 +187,6 @@ class Bowl:
 
         return points
 
-    def _common_points(
-        self, placed_tile: PlacedTile, other_placed_tile: PlacedTile
-    ) -> list[Point]:
-        common_points = []
-        for point in placed_tile.tile.vertices.to_list():
-            if point in other_placed_tile.tile.vertices.to_list():
-                common_points += [point]
-        return common_points
-
     def _add_pillar(
         self, result: Workplane, bottom_tile: PlacedTile, top_tile: PlacedTile
     ) -> Workplane:
@@ -275,7 +253,7 @@ class Bowl:
     def _add_vertex_overhang(
         self, result: Workplane, top_tile: PlacedTile, base_top_tile: PlacedTile
     ) -> Workplane:
-        common_points = self._common_points(top_tile, base_top_tile)
+        common_points = top_tile.common_points(base_top_tile)
 
         if len(common_points) != 1:
             raise ValueError("Vertex point not found")

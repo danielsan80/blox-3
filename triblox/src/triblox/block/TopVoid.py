@@ -38,11 +38,11 @@ class TopVoid:
     def _taper_void(self, placed_tile: PlacedTile) -> Workplane:
         taper_v = clr + taper_h
 
-        points = placed_tile.vertices.original_points()
+        points = placed_tile.vertices.original_points(to6=True)
         points = [point.to_tuple() for point in points]
         base_up = Sketch().polygon(points)
 
-        points = placed_tile.vertices.offset_points(taper_v * sin30)
+        points = placed_tile.vertices.offset_points(taper_v * sin30, to6=True)
         points = [point.to_tuple() for point in points]
         base_down = Sketch().polygon(points)
 

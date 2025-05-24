@@ -6,7 +6,7 @@ from dataclasses import dataclass
 
 from cadquery import Sketch, Workplane
 
-from triblox.config import base_hole_d, side, taper_h, wall_w
+from triblox.config import base_hole_margin, clr, taper_h, stub_h, wall_w
 from triblox.mosaic.Mosaic import Mosaic
 from triblox.mosaic.PlacedTile import PlacedTile
 
@@ -25,30 +25,15 @@ class BaseHoleVoid:
 
     def _tile_base_hole_void(self, placed_tile: PlacedTile) -> Workplane:
 
-        tile = placed_tile.tile
+        points = placed_tile.vertices.centered_points(clr + wall_w + base_hole_margin)
+        points = [point.to_tuple() for point in points]
+        triangle = Sketch().polygon(points)
 
-        adjacent_tiles = tile.adjacent_tiles.to_list()
+        result = (
+            Workplane("XY")
+            .placeSketch(triangle)
+            .extrude(wall_w)
+            .translate((0, 0, -taper_h-stub_h))
+        )
 
-        middle_points = []
-
-        for adjacent_tile in adjacent_tiles:
-            if not self.mosaic.contains(adjacent_tile):
-                continue
-
-            common_points = list(
-                set(tile.vertices.to_list()) & set(adjacent_tile.vertices.to_list())
-            )
-            middle_points += [common_points[0].move(common_points[1], side / 2)]
-
-        result = Workplane("XY")
-
-        for middle_point in middle_points:
-            hole = (
-                Workplane("XY")
-                .placeSketch(Sketch().circle(base_hole_d / 2))
-                .extrude(taper_h + wall_w)
-                .translate(middle_point.to_tuple() + (0,))
-            )
-            result = result.union(hole)
-
-        return result.translate((0, 0, -taper_h))
+        return result
