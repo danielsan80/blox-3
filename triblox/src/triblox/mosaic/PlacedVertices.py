@@ -5,9 +5,9 @@ sys.path.append("src/")
 from dataclasses import dataclass
 from typing import Tuple
 
+from triblox.config import fix
 from triblox.geometry.Point import Point
 from triblox.vertex.Vertex import Vertex
-from triblox.config import fix
 
 
 @dataclass(frozen=True)
@@ -30,7 +30,7 @@ class PlacedVertices:
 
         return tuple(points)
 
-    def original_points(self, to6: bool = False ) -> Tuple[Point]:
+    def original_points(self, to6: bool = False) -> Tuple[Point]:
         if to6:
             return self._original_points_to6()
         points = []
@@ -97,7 +97,3 @@ class PlacedVertices:
             all_points += points
 
         return tuple(all_points)
-
-
-
-

@@ -6,7 +6,7 @@ from dataclasses import dataclass
 
 from cadquery import Sketch, Workplane
 
-from triblox.config import base_hole_margin, clr, taper_h, stub_h, wall_w
+from triblox.config import base_hole_margin, clr, stub_h, taper_h, wall_w
 from triblox.mosaic.Mosaic import Mosaic
 from triblox.mosaic.PlacedTile import PlacedTile
 
@@ -33,7 +33,7 @@ class BaseHoleVoid:
             Workplane("XY")
             .placeSketch(triangle)
             .extrude(wall_w)
-            .translate((0, 0, -taper_h-stub_h))
+            .translate((0, 0, -taper_h - stub_h))
         )
 
         return result

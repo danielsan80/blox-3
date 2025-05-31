@@ -4,9 +4,9 @@ sys.path.append("src/")
 
 from dataclasses import dataclass
 
+from triblox.geometry.Point import Point
 from triblox.mosaic.PlacedVertices import PlacedVertices
 from triblox.tile.Tile import Tile
-from triblox.geometry.Point import Point
 
 
 @dataclass(frozen=True)
