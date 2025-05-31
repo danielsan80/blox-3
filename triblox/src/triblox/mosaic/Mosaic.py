@@ -91,3 +91,12 @@ class Mosaic:
             mosaic = mosaic.add(tile.move(x, y))
 
         return mosaic
+
+    def merge(self, other: "Mosaic") -> "Mosaic":
+        mosaic = self
+
+        for tile in other.tiles.values():
+            if not mosaic.contains(tile):
+                mosaic = mosaic.add(tile)
+
+        return mosaic

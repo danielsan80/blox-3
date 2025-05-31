@@ -16,7 +16,6 @@ from triblox.block.TopVoid import TopVoid
 from triblox.block.PrismVoid import PrismVoid
 from triblox.block.BaseVoid import BaseVoid
 from triblox.block.BaseHoleVoid import BaseHoleVoid
-from triblox.block.BaseHoleVoid2 import BaseHoleVoid2
 from triblox.bowl.Bowl import Bowl
 
 hn = 1
@@ -67,4 +66,4 @@ result = (
 
 
 show_object(result)
-exporters.export(result, "bowl.stl")
+# exporters.export(result, "bowl.stl")
