@@ -2,8 +2,10 @@ import sys
 
 sys.path.append("../../src/")
 
+from collections import defaultdict
 from dataclasses import dataclass
 from pprint import pprint
+from typing import Dict, List
 
 from cadquery import Sketch, Workplane
 
@@ -13,6 +15,31 @@ from triblox.geometry.Point import Point
 from triblox.helper.util import normalize_float, sin60
 from triblox.mosaic.Mosaic import Mosaic
 from triblox.mosaic.PlacedTile import PlacedTile
+
+
+@dataclass(frozen=True)
+class BaseCol:
+    top_tile: PlacedTile
+    bottom_tile: PlacedTile
+
+
+@dataclass(frozen=True)
+class EdgeCol:
+    top_tile: PlacedTile
+    base_top_tile: PlacedTile
+
+
+@dataclass(frozen=True)
+class VertexCol:
+    top_tile: PlacedTile
+    base_top_tile: PlacedTile
+
+
+@dataclass(frozen=True)
+class ClassifiedCols:
+    base: Dict[str, List[BaseCol]]
+    edge: Dict[str, List[EdgeCol]]
+    vertex: Dict[str, List[VertexCol]]
 
 
 @dataclass(frozen=True)
@@ -29,33 +56,51 @@ class Bowl:
     def get(self) -> Workplane:
         result = Workplane("XY")
 
+        classified_cols = self._classified_cols()
+
+        for key, base_cols in classified_cols.base.items():
+            for base_col in base_cols:
+                result = self._add_pillar(result, base_col)
+
+        for key, edge_cols in classified_cols.edge.items():
+            for edge_col in edge_cols:
+                result = self._add_edge_overhang(result, edge_col)
+
+        for key, vertex_cols in classified_cols.vertex.items():
+            for vertex_col in vertex_cols:
+                result = self._add_vertex_overhang(result, vertex_col)
+
+        return result
+
+    def _classified_cols(self) -> ClassifiedCols:
+
         top_tiles = self.mosaic_top.placed_tiles
         bottom_tiles = self.mosaic_bottom.placed_tiles
 
-        base_top_tiles = {}
-        edge_top_tiles = {}
-        vertex_top_tiles = {}
+        base_cols = defaultdict(list)
+        edge_cols = defaultdict(list)
+        vertex_cols = defaultdict(list)
 
         _top_tiles = top_tiles
         unhandled_top_tiles = {}
 
         for key, top_tile in _top_tiles.items():
             if key in bottom_tiles:
-                result = self._add_pillar(result, bottom_tiles[key], top_tile)
-                base_top_tiles[key] = top_tile
+                base_cols[key].append(BaseCol(top_tile, bottom_tiles[key]))
             else:
                 unhandled_top_tiles[key] = top_tile
 
         _top_tiles = unhandled_top_tiles
         unhandled_top_tiles = {}
 
+        base_top_tiles = [
+            base_col.top_tile for values in base_cols.values() for base_col in values
+        ]
+
         for key, top_tile in _top_tiles.items():
-            adjacent_base_top_tiles = self._adjacent_tiles(
-                top_tile, base_top_tiles.values()
-            )
-            for base_tile in adjacent_base_top_tiles:
-                result = self._add_edge_overhang(result, base_tile, top_tile)
-                edge_top_tiles[key] = top_tile
+            adjacent_base_top_tiles = self._adjacent_tiles(top_tile, base_top_tiles)
+            for base_top_tile in adjacent_base_top_tiles:
+                edge_cols[key].append(EdgeCol(top_tile, base_top_tile))
             if not adjacent_base_top_tiles:
                 unhandled_top_tiles[key] = top_tile
 
@@ -75,16 +120,13 @@ class Bowl:
                 visited.append(current_top_tile)
 
                 adjacent_base_top_tiles = self._adjacent_tiles(
-                    current_top_tile, base_top_tiles.values()
+                    current_top_tile, base_top_tiles
                 )
 
                 if adjacent_base_top_tiles:
                     for base_top_tile in adjacent_base_top_tiles:
                         if top_tile.common_points(base_top_tile):
-                            result = self._add_vertex_overhang(
-                                result, top_tile, base_top_tile
-                            )
-                            vertex_top_tiles[key] = current_top_tile
+                            vertex_cols[key].append(VertexCol(top_tile, base_top_tile))
                             found = True
                 else:
                     adjacent_edge_top_tiles = self._adjacent_tiles(
@@ -100,7 +142,11 @@ class Bowl:
         if len(unhandled_top_tiles) > 0:
             pprint(f"Unhandled top tiles: {len(unhandled_top_tiles)}")
 
-        return result.clean()
+        return ClassifiedCols(
+            base_cols,
+            edge_cols,
+            vertex_cols,
+        )
 
     def _adjacent_tiles(
         self, placed_tile: PlacedTile, other_placed_tiles: list[PlacedTile]
@@ -121,7 +167,6 @@ class Bowl:
     def _tile_points_on_edge(
         self, placed_tile: PlacedTile, edge_points: list[Point]
     ) -> list[tuple[float, float]]:
-
         all_points = []
         vertices = placed_tile.vertices.to_list()
 
@@ -157,7 +202,6 @@ class Bowl:
     def _tile_points_on_vertex(
         self, placed_tile: PlacedTile, vertex_point: Point
     ) -> list[tuple[float, float]]:
-
         vertices = placed_tile.vertices.to_list()
 
         for i in range(3):
@@ -187,9 +231,10 @@ class Bowl:
 
         return points
 
-    def _add_pillar(
-        self, result: Workplane, bottom_tile: PlacedTile, top_tile: PlacedTile
-    ) -> Workplane:
+    def _add_pillar(self, result: Workplane, base_col: BaseCol) -> Workplane:
+        top_tile = base_col.top_tile
+        bottom_tile = base_col.bottom_tile
+
         bottom_sketch = Sketch().polygon(self._tile_points(bottom_tile))
         top_sketch = Sketch().polygon(self._tile_points(top_tile))
 
@@ -216,9 +261,9 @@ class Bowl:
 
         return result
 
-    def _add_edge_overhang(
-        self, result: Workplane, base_top_tile: PlacedTile, top_tile: PlacedTile
-    ) -> Workplane:
+    def _add_edge_overhang(self, result: Workplane, edge_col: EdgeCol) -> Workplane:
+        top_tile = edge_col.top_tile
+        base_top_tile = edge_col.base_top_tile
         edge_points = []
         for point in top_tile.tile.vertices.to_list():
             if point in base_top_tile.tile.vertices.to_list():
@@ -251,8 +296,11 @@ class Bowl:
             return result
 
     def _add_vertex_overhang(
-        self, result: Workplane, top_tile: PlacedTile, base_top_tile: PlacedTile
+        self, result: Workplane, vertex_col: VertexCol
     ) -> Workplane:
+        top_tile = vertex_col.top_tile
+        base_top_tile = vertex_col.base_top_tile
+
         common_points = top_tile.common_points(base_top_tile)
 
         if len(common_points) != 1:
