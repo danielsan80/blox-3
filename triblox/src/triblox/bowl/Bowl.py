@@ -10,6 +10,8 @@ from typing import Dict, List
 from cadquery import Sketch, Workplane
 
 from triblox.block.functions import h
+from triblox.caching.CacheBase import CacheBase
+from triblox.caching.CachedResult import CachedResult
 from triblox.config import clr, fix
 from triblox.geometry.Point import Point
 from triblox.helper.util import normalize_float, sin60
@@ -56,19 +58,49 @@ class Bowl:
     def get(self) -> Workplane:
         result = Workplane("XY")
 
+        cache_base = (
+            CacheBase()
+            .add_owner(self)
+            .add_mosaic(self.mosaic_bottom)
+            .add_mosaic(self.mosaic_top)
+            .add("h", self.h)
+        )
+
+        cached_result = CachedResult(cache_base, result)
+
         classified_cols = self._classified_cols()
 
         for key, base_cols in classified_cols.base.items():
+            placed_tile = base_cols[0].top_tile
+            if cached_result.has(placed_tile):
+                cached_result.add(placed_tile)
+                continue
+            result = cached_result.get()
             for base_col in base_cols:
                 result = self._add_pillar(result, base_col)
+            cached_result.add(base_col.top_tile, result)
 
         for key, edge_cols in classified_cols.edge.items():
+            placed_tile = edge_cols[0].top_tile
+            if cached_result.has(placed_tile):
+                cached_result.add(placed_tile)
+                continue
+            result = cached_result.get()
             for edge_col in edge_cols:
                 result = self._add_edge_overhang(result, edge_col)
+            cached_result.add(edge_col.top_tile, result)
 
         for key, vertex_cols in classified_cols.vertex.items():
+            placed_tile = vertex_cols[0].top_tile
+            if cached_result.has(placed_tile):
+                cached_result.add(placed_tile)
+                continue
+            result = cached_result.get()
             for vertex_col in vertex_cols:
                 result = self._add_vertex_overhang(result, vertex_col)
+            cached_result.add(vertex_col.top_tile, result)
+
+        result = cached_result.get()
 
         return result
 

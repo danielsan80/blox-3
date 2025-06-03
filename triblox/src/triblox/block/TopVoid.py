@@ -7,6 +7,8 @@ from dataclasses import dataclass
 from cadquery import Sketch, Workplane
 
 from triblox.block.functions import h
+from triblox.caching.CacheBase import CacheBase
+from triblox.caching.CachedResult import CachedResult
 from triblox.config import clr, h_clr, h_cut, stub_h, taper_h
 from triblox.helper.util import normalize_float, sin30
 from triblox.mosaic.Mosaic import Mosaic
@@ -24,14 +26,26 @@ class TopVoid:
         object.__setattr__(self, "h", normalize_float(self.h))
 
     def get(self) -> Workplane:
-
         result = Workplane("XY")
 
+        cache_base = CacheBase().add_owner(self).add_mosaic(self.mosaic)
+
+        cached_result = CachedResult(cache_base, result)
+
         for placed_tile in self.mosaic.placed_tiles.values():
+            if cached_result.has(placed_tile):
+                cached_result.add(placed_tile)
+                continue
+
+            result = cached_result.get()
+
             result = result.union(self._taper_void(placed_tile))
             result = result.union(self._stub_void(placed_tile))
             result = result.union(self._top_leveling(placed_tile))
 
+            cached_result.add(placed_tile, result)
+
+        result = cached_result.get()
         result = result.translate((0, 0, h(self.h)))
         return result
 

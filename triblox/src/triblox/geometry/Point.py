@@ -2,7 +2,6 @@ import sys
 
 sys.path.append("src/")
 
-
 from dataclasses import dataclass
 
 from shapely.affinity import rotate as sh_rotate
@@ -56,7 +55,6 @@ class Point:
         return hypotenuse(dx, dy)
 
     def rotate(self, origin: "Point", angle: float) -> "Point":
-
         _point = ShPoint(self.x, self.y)
         _origin = ShPoint(origin.x, origin.y)
 

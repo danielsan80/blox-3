@@ -18,6 +18,9 @@ from triblox.block.BaseVoid import BaseVoid
 from triblox.block.BaseHoleVoid import BaseHoleVoid
 from triblox.block.BaseHoleOnEdgesVoid import BaseHoleOnEdgesVoid
 from triblox.mosaic.MosaicBuilder import MosaicBuilder
+import time
+
+start = time.perf_counter()
 
 hn = 3.0
 
@@ -41,7 +44,7 @@ top_void = TopVoid(mosaic, hn)
 prism_void = PrismVoid(mosaic, hn)
 base_void = BaseVoid(mosaic)
 base_hole_void = BaseHoleVoid(mosaic)
-# base_hole_on_edges_void = BaseHoleOnEdgesVoid(mosaic)
+base_hole_on_edges_void = BaseHoleOnEdgesVoid(mosaic)
 
 result = (
     Workplane("XY")
@@ -51,7 +54,7 @@ result = (
     .cut(prism_void.get())
     .cut(base_void.get())
     .cut(base_hole_void.get())
-#     .cut(base_hole_on_edges_void.get())
+    .cut(base_hole_on_edges_void.get())
 #     .union(base.get().translate((0, 0, h(hn))))
 #     .union(top_void.get().translate((0, 0, 0.1)))
 )
@@ -59,3 +62,7 @@ result = (
 
 show_object(result)
 # exporters.export(result, "block.stl")
+
+
+end = time.perf_counter()
+print(f"Execution Time: {end - start:.3f} seconds")
