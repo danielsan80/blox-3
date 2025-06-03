@@ -7,6 +7,8 @@ def dsin(degrees: float) -> float:
 
 sin60 = dsin(60)
 sin30 = dsin(30)
+sin45 = dsin(45)
+
 
 
 def normalize_float(value: float) -> float:
