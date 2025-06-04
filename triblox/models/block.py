@@ -51,16 +51,16 @@ duct = Duct(
     h(hn),
     Tile(1,0).vertices.c,
     h(0.8),
-    6,
+    7,
 )
 
 result = (
     Workplane("XY")
-    .union(duct.get())
-#     .union(base.get())
-#     .union(prism.get())
-#     .cut(top_void.get())
-#     .cut(duct.get())
+#     .union(duct.get())
+    .union(base.get())
+    .union(prism.get())
+    .cut(top_void.get())
+    .cut(duct.get())
 #     .cut(prism_void.get())
 #     .cut(base_void.get())
 #     .cut(base_hole_void.get())

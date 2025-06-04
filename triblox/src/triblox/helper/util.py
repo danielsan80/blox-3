@@ -10,7 +10,6 @@ sin30 = dsin(30)
 sin45 = dsin(45)
 
 
-
 def normalize_float(value: float) -> float:
     return abs(float(value)) * (1 if value >= 0 else -1)
 
