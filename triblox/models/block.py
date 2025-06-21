@@ -21,6 +21,7 @@ from triblox.block.BaseHoleVoid import BaseHoleVoid
 from triblox.block.BaseHoleOnEdgesVoid import BaseHoleOnEdgesVoid
 from triblox.mosaic.MosaicBuilder import MosaicBuilder
 from math import radians, cos, sin
+from triblox.block.WasherVoid import WasherVoid
 
 import time
 
@@ -81,45 +82,13 @@ spout = Bowl(
 spout_border = Prism(spout_top, 3.5/h(1))
 
 enter = Tile(1, 1).vertices.c
-# washer_void = (
-#     Workplane("XY")
-# #     .transformed(offset=(enter.x, enter.y, h(hn) - clr -taper_h - stub_h))
-# )
-washer_void = (
-    Workplane("XY")
-    .circle(25.5/2)
-    .extrude(-5)
+
+washer_void = WasherVoid(
+    h=hn,
+    washer_center=enter,
+    washer_h=4+2,
+    washer_d=25.5
 )
-
-# for angle in [45, 135, -45, -135]:
-#     r = 18/2
-#     rad = radians(angle)
-#     x = r * cos(rad)
-#     y = r * sin(rad)
-#     washer_void = (
-#         washer_void
-#         .union(
-#             Workplane("XY")
-#             .center(x, y)
-#             .circle(3/2)
-#             .extrude(-11.40-2 +3/2)
-#         )
-#         .union(
-#             Workplane("XY")
-#             .transformed(offset=(0, 0, -11.40-2+3/2))
-#             .center(x, y)
-#             .circle(3/2)
-#             .extrude(-3/2, taper=45)
-#         )
-#     )
-
-washer_void = (
-    washer_void
-    .translate((enter.x, enter.y, h(hn) - clr - taper_h - stub_h))
-)
-
-
-
 
 
 result = (
@@ -131,7 +100,7 @@ result = (
     .union(spout.get())
     .union(spout_border.get().translate((0, 0, h(1))))
     .cut(duct.get())
-    .cut(washer_void)
+    .cut(washer_void.get())
 #     .cut(prism_void.get())
 #     .cut(base_void.get())
 #     .cut(base_hole_void.get())
