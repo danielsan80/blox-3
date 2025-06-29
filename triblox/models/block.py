@@ -22,6 +22,7 @@ from triblox.block.BaseHoleOnEdgesVoid import BaseHoleOnEdgesVoid
 from triblox.mosaic.MosaicBuilder import MosaicBuilder
 from math import radians, cos, sin
 from triblox.washer.WasherVoid import WasherVoid
+from triblox.spout.Spout import Spout
 
 import time
 
@@ -55,17 +56,25 @@ duct_enter = Tile(1, 1).vertices.c
 duct_exit = Tile(1,-2).vertices.c
 duct_d = 7
 
+washer_h_cork = 4
+washer_h_steel = 2
+washer_d = 25.5
+
+spout_margin = 0.5
+
 duct = Duct(
     duct_enter,
     h(hn),
     duct_exit,
-    h(1),
+    h(1)+duct_d/2+spout_margin,
     duct_d,
 )
 
-washer_h_cork = 4
-washer_h_steel = 2
-washer_d = 25.5
+
+spout = Spout(
+    duct_d=duct_d,
+    top_h=duct_d/2
+)
 
 washer_void = WasherVoid(
     h=hn,
@@ -79,6 +88,7 @@ result = (
     .union(base.get())
     .union(prism.get())
     .cut(top_void.get())
+    .union(spout.get())
     .cut(duct.get())
     .cut(washer_void.get())
 #     .cut(prism_void.get())
