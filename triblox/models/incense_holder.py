@@ -28,7 +28,7 @@ import time
 
 start = time.perf_counter()
 
-hn = 3.0
+hu = 3.0
 
 mosaic = (
     MosaicBuilder()
@@ -45,8 +45,8 @@ mosaic = (
 )
 
 base = Base(mosaic)
-prism = Prism(mosaic,hn)
-top_void = TopVoid(mosaic, hn)
+prism = Prism(mosaic,hu)
+top_void = TopVoid(mosaic, hu)
 
 duct_enter = Tile(1, 1).vertices.c
 duct_exit = Tile(1,-2).vertices.c
@@ -60,7 +60,7 @@ spout_margin = 0.5
 
 duct = Duct(
     duct_enter,
-    h(hn)-washer_h_steel-washer_h_cork,
+    h(hu)-washer_h_steel-washer_h_cork,
     duct_exit,
     h(1)+duct_d/2+spout_margin,
     duct_d,
@@ -73,7 +73,7 @@ spout = Spout(
 )
 
 washer_void = WasherVoid(
-    h=hn,
+    hu=hu,
     washer_center=duct_enter,
     washer_h=washer_h_cork+washer_h_steel,
     washer_d=washer_d

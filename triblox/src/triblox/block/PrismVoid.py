@@ -20,18 +20,18 @@ from triblox.mosaic.PlacedTile import PlacedTile
 @dataclass(frozen=True)
 class PrismVoid:
     mosaic: Mosaic
-    h: float
+    hu: float
 
     def __post_init__(self):
-        if self.h <= 0:
-            raise ValueError("Height must be greater than 0")
-        object.__setattr__(self, "h", normalize_float(self.h))
+        if self.hu <= 0:
+            raise ValueError("Height units must be greater than 0")
+        object.__setattr__(self, "hu", normalize_float(self.hu))
 
     def get(self) -> Workplane:
         result = Workplane("XY")
 
         cache_base = (
-            CacheBase().add_owner(self).add_mosaic(self.mosaic).add("h", self.h)
+            CacheBase().add_owner(self).add_mosaic(self.mosaic).add("hu", self.hu)
         )
 
         cached_result = CachedResult(cache_base, result)
@@ -91,14 +91,14 @@ class PrismVoid:
 
         wp_top = (
             Workplane("XY")
-            .transformed(offset=(0, 0, h(self.h) - v.taper_v - v.stub_v))
+            .transformed(offset=(0, 0, h(self.hu) - v.taper_v - v.stub_v))
             .placeSketch(slope_top)
         )
 
         wp_bottom = (
             Workplane("XY")
             .transformed(
-                offset=(0, 0, h(self.h) - v.taper_v - v.stub_v - v.slope_bottom_v)
+                offset=(0, 0, h(self.hu) - v.taper_v - v.stub_v - v.slope_bottom_v)
             )
             .placeSketch(slope_bottom)
         )
@@ -114,7 +114,7 @@ class PrismVoid:
 
         return (
             Workplane("XY")
-            .transformed(offset=(0, 0, h(self.h) - v.taper_v - v.stub_v))
+            .transformed(offset=(0, 0, h(self.hu) - v.taper_v - v.stub_v))
             .placeSketch(slope_top)
             .extrude(0.00001)
         )
@@ -131,7 +131,7 @@ class PrismVoid:
         v = self._values()
 
         reduce_v = v.taper_v + v.stub_v + v.slope_bottom_v
-        void_h = h(self.h) - reduce_v - wall_w
+        void_h = h(self.hu) - reduce_v - wall_w
 
         pprint(void_h)
 
@@ -160,6 +160,6 @@ class PrismVoid:
         return (
             Workplane("XY")
             .placeSketch(triangle)
-            .extrude(h(self.h) - reduce_v - wall_w)
+            .extrude(h(self.hu) - reduce_v - wall_w)
             .translate((0, 0, wall_w))
         )

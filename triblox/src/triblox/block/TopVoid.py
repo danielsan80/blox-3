@@ -18,12 +18,12 @@ from triblox.mosaic.PlacedTile import PlacedTile
 @dataclass(frozen=True)
 class TopVoid:
     mosaic: Mosaic
-    h: float
+    hu: float
 
     def __post_init__(self):
-        if self.h <= 0:
-            raise ValueError("Height must be greater than 0")
-        object.__setattr__(self, "h", normalize_float(self.h))
+        if self.hu <= 0:
+            raise ValueError("Height units must be greater than 0")
+        object.__setattr__(self, "hu", normalize_float(self.hu))
 
     def get(self) -> Workplane:
         result = Workplane("XY")
@@ -46,7 +46,7 @@ class TopVoid:
             cached_result.add(placed_tile, result)
 
         result = cached_result.get()
-        result = result.translate((0, 0, h(self.h)))
+        result = result.translate((0, 0, h(self.hu)))
         return result
 
     def _taper_void(self, placed_tile: PlacedTile) -> Workplane:

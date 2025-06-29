@@ -2,10 +2,15 @@ import sys
 
 sys.path.append("../../src/")
 
-from triblox.config import h_fix, h_step
+from triblox.config import h_fix, h_unit
 from triblox.helper.util import normalize_float
 
 
-def h(n: float) -> float:
-    n = normalize_float(n)
-    return n * h_step + h_fix
+def h(hu: float) -> float:
+    hu = normalize_float(hu)
+    return hu * h_unit + h_fix
+
+
+def h_reverse(h_mm: float) -> float:
+    h_mm = normalize_float(h_mm)
+    return (h_mm - h_fix) / h_unit

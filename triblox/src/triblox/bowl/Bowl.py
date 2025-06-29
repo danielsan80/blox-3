@@ -48,12 +48,12 @@ class ClassifiedCols:
 class Bowl:
     mosaic_bottom: Mosaic
     mosaic_top: Mosaic
-    h: float
+    hu: float
 
     def __post_init__(self):
-        if self.h <= 0:
-            raise ValueError("Height must be greater than 0")
-        object.__setattr__(self, "h", normalize_float(self.h))
+        if self.hu <= 0:
+            raise ValueError("Height units must be greater than 0")
+        object.__setattr__(self, "hu", normalize_float(self.hu))
 
     def get(self) -> Workplane:
         result = Workplane("XY")
@@ -63,7 +63,7 @@ class Bowl:
             .add_owner(self)
             .add_mosaic(self.mosaic_bottom)
             .add_mosaic(self.mosaic_top)
-            .add("h", self.h)
+            .add("hu", self.hu)
         )
 
         cached_result = CachedResult(cache_base, result)
@@ -279,7 +279,7 @@ class Bowl:
 
         wp_top = (
             Workplane("XY")
-            .transformed(offset=(0, 0, h(self.h)))
+            .transformed(offset=(0, 0, h(self.hu)))
             .placeSketch(top_sketch)
         )
 
@@ -316,7 +316,7 @@ class Bowl:
         )
         wp_top = (
             Workplane("XY")
-            .transformed(offset=(0, 0, h(self.h)))
+            .transformed(offset=(0, 0, h(self.hu)))
             .placeSketch(top_sketch)
         )
 
@@ -352,7 +352,7 @@ class Bowl:
         )
         wp_top = (
             Workplane("XY")
-            .transformed(offset=(0, 0, h(self.h)))
+            .transformed(offset=(0, 0, h(self.hu)))
             .placeSketch(top_sketch)
         )
         try:

@@ -28,7 +28,7 @@ import time
 
 start = time.perf_counter()
 
-hn = 3.0
+hu = 3.0
 
 mosaic = (
     MosaicBuilder()
@@ -45,9 +45,9 @@ mosaic = (
 )
 
 base = Base(mosaic)
-prism = Prism(mosaic,hn)
-top_void = TopVoid(mosaic, hn)
-# prism_void = PrismVoid(mosaic, hn)
+prism = Prism(mosaic,hu)
+top_void = TopVoid(mosaic, hu)
+# prism_void = PrismVoid(mosaic, hu)
 # base_void = BaseVoid(mosaic)
 # base_hole_void = BaseHoleVoid(mosaic)
 # base_hole_on_edges_void = BaseHoleOnEdgesVoid(mosaic)
@@ -61,7 +61,7 @@ result = (
 #     .cut(base_void.get())
 #     .cut(base_hole_void.get())
 #     .cut(base_hole_on_edges_void.get())
-#      .union(base.get().translate((0, 0, h(hn))))
+#      .union(base.get().translate((0, 0, h(hu))))
 #     .union(top_void.get().translate((0, 0, stub_h+0.1)))
 )
 

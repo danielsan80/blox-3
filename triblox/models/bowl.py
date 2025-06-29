@@ -18,7 +18,7 @@ from triblox.block.BaseVoid import BaseVoid
 from triblox.block.BaseHoleVoid import BaseHoleVoid
 from triblox.bowl.Bowl import Bowl
 
-hn = 1
+hu = 1
 
 mosaic_bottom = (
     Mosaic()
@@ -56,7 +56,7 @@ mosaic_top = (
 
 
 # base = Base(mosaic_bottom)
-bowl = Bowl(mosaic_bottom, mosaic_top,hn)
+bowl = Bowl(mosaic_bottom, mosaic_top, hu)
 
 result = (
     Workplane("XY")

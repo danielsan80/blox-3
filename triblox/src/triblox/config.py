@@ -4,7 +4,7 @@ layer_h = 0.15
 layer_w = 0.46
 
 side = 10
-h_step = 10
+h_unit = 10
 h_fix = 0.2
 h_cut = 0.3
 taper_h = 1.7
