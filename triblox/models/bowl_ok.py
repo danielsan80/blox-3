@@ -18,7 +18,7 @@ from triblox.block.BaseVoid import BaseVoid
 from triblox.block.BaseHoleVoid import BaseHoleVoid
 from triblox.bowl.Bowl import Bowl
 
-hn = 1
+hu = 1
 
 mosaic_bottom = (
     Mosaic()
@@ -54,9 +54,9 @@ mosaic_top = (
 )
 
 base = Base(mosaic_bottom)
-bowl = Bowl(mosaic_bottom, mosaic_top,hn)
-prism = Prism(mosaic_top,hn/2)
-top_void = TopVoid(mosaic_top, hn/2)
+bowl = Bowl(mosaic_bottom, mosaic_top,hu)
+prism = Prism(mosaic_top,hu/2)
+top_void = TopVoid(mosaic_top, hu/2)
 
 result = (
     Workplane("XY")
@@ -66,7 +66,7 @@ result = (
         Workplane("XY")
         .union(prism.get())
         .cut(top_void.get())
-        .translate((0, 0, h(hn)))
+        .translate((0, 0, h(hu)))
     )
 )
 
