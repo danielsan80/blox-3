@@ -47,27 +47,51 @@ mosaic = (
 base = Base(mosaic)
 prism = Prism(mosaic,hn)
 top_void = TopVoid(mosaic, hn)
-# prism_void = PrismVoid(mosaic, hn)
-# base_void = BaseVoid(mosaic)
-# base_hole_void = BaseHoleVoid(mosaic)
-# base_hole_on_edges_void = BaseHoleOnEdgesVoid(mosaic)
+
+duct_enter = Tile(1, 1).vertices.c
+duct_exit = Tile(1,-2).vertices.c
+duct_d = 7
+
+washer_h_cork = 4
+washer_h_steel = 2
+washer_d = 25.5
+
+spout_margin = 0.5
+
+duct = Duct(
+    duct_enter,
+    h(hn)-washer_h_steel-washer_h_cork,
+    duct_exit,
+    h(1)+duct_d/2+spout_margin,
+    duct_d,
+)
+
+
+spout = Spout(
+    duct_d=duct_d,
+    top_h=duct_d/2
+)
+
+washer_void = WasherVoid(
+    h=hn,
+    washer_center=duct_enter,
+    washer_h=washer_h_cork+washer_h_steel,
+    washer_d=washer_d
+)
 
 result = (
     Workplane("XY")
     .union(base.get())
     .union(prism.get())
     .cut(top_void.get())
-#     .cut(prism_void.get())
-#     .cut(base_void.get())
-#     .cut(base_hole_void.get())
-#     .cut(base_hole_on_edges_void.get())
-#      .union(base.get().translate((0, 0, h(hn))))
-#     .union(top_void.get().translate((0, 0, stub_h+0.1)))
+    .union(spout.get())
+    .cut(duct.get())
+    .cut(washer_void.get())
 )
 
 
 show_object(result)
-# exporters.export(result, "block.stl")
+exporters.export(result, "incense_holder.stl")
 
 
 end = time.perf_counter()
