@@ -21,6 +21,7 @@ from triblox.block.BaseHoleVoid import BaseHoleVoid
 from triblox.block.BaseHoleOnEdgesVoid import BaseHoleOnEdgesVoid
 from triblox.mosaic.MosaicBuilder import MosaicBuilder
 from math import radians, cos, sin
+from triblox.washer.WasherVoid import WasherVoid
 
 import time
 
@@ -50,22 +51,36 @@ top_void = TopVoid(mosaic, hn)
 # base_hole_void = BaseHoleVoid(mosaic)
 # base_hole_on_edges_void = BaseHoleOnEdgesVoid(mosaic)
 
+duct_enter = Tile(1, 1).vertices.c
+duct_exit = Tile(1,-2).vertices.c
 duct_d = 7
+
 duct = Duct(
-    Tile(1,1).vertices.c,
+    duct_enter,
     h(hn),
-    Tile(1,-2).vertices.c,
+    duct_exit,
     h(1),
     duct_d,
 )
 
+washer_h_cork = 4
+washer_h_steel = 2
+washer_d = 25.5
+
+washer_void = WasherVoid(
+    h=hn,
+    washer_center=duct_enter,
+    washer_h=washer_h_cork+washer_h_steel,
+    washer_d=washer_d
+)
 
 result = (
     Workplane("XY")
     .union(base.get())
     .union(prism.get())
     .cut(top_void.get())
-   .cut(duct.get())
+    .cut(duct.get())
+    .cut(washer_void.get())
 #     .cut(prism_void.get())
 #     .cut(base_void.get())
 #     .cut(base_hole_void.get())
