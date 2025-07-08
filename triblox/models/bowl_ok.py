@@ -11,12 +11,15 @@ from triblox.mosaic.Mosaic import Mosaic
 from triblox.helper.util import sin30
 from dataclasses import dataclass
 from triblox.block.Base import Base
+from triblox.block.BaseVoid import BaseVoid
 from triblox.block.Prism import Prism
 from triblox.block.TopVoid import TopVoid
 from triblox.block.PrismVoid import PrismVoid
 from triblox.block.BaseVoid import BaseVoid
 from triblox.block.BaseHoleVoid import BaseHoleVoid
 from triblox.bowl.Bowl import Bowl
+from triblox.bowl.BowlVoid import BowlVoid
+
 
 hu = 1
 
@@ -54,22 +57,28 @@ mosaic_top = (
 )
 
 base = Base(mosaic_bottom)
+base_void = BaseVoid(mosaic_bottom)
 bowl = Bowl(mosaic_bottom, mosaic_top,hu)
+bowl_void = BowlVoid(mosaic_bottom=mosaic_bottom, mosaic_top=mosaic_top,hu=hu,wall_thick=wall_w, bottom_thick=wall_w)
 prism = Prism(mosaic_top,hu/2)
+prism_void = PrismVoid(mosaic=mosaic_top, hu=hu/2, wall_thick=wall_w, bottom_thick=0)
 top_void = TopVoid(mosaic_top, hu/2)
 
 result = (
     Workplane("XY")
     .union(base.get())
     .union(bowl.get())
+    .cut(bowl_void.get())
     .union(
         Workplane("XY")
         .union(prism.get())
+        .cut(prism_void.get())
         .cut(top_void.get())
         .translate((0, 0, h(hu)))
     )
+    .cut(base_void.get())
 )
 
 
 show_object(result)
-# exporters.export(result, "bowl.stl")
+exporters.export(result, "bowl.stl")

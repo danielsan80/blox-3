@@ -47,9 +47,9 @@ mosaic = (
 base = Base(mosaic)
 prism = Prism(mosaic,hu)
 top_void = TopVoid(mosaic, hu)
-# prism_void = PrismVoid(mosaic, hu)
-# base_void = BaseVoid(mosaic)
-# base_hole_void = BaseHoleVoid(mosaic)
+prism_void = PrismVoid(mosaic, hu)
+base_void = BaseVoid(mosaic)
+base_hole_void = BaseHoleVoid(mosaic)
 # base_hole_on_edges_void = BaseHoleOnEdgesVoid(mosaic)
 
 result = (
@@ -57,12 +57,12 @@ result = (
     .union(base.get())
     .union(prism.get())
     .cut(top_void.get())
-#     .cut(prism_void.get())
-#     .cut(base_void.get())
-#     .cut(base_hole_void.get())
+    .cut(prism_void.get())
+    .cut(base_void.get())
+    .cut(base_hole_void.get())
 #     .cut(base_hole_on_edges_void.get())
-#      .union(base.get().translate((0, 0, h(hu))))
-#     .union(top_void.get().translate((0, 0, stub_h+0.1)))
+#     .union(base.get().translate((0, 0, h(hu))))
+    .union(top_void.get().translate((0, 0, stub_h+0.1)))
 )
 
 

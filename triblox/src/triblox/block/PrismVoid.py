@@ -15,23 +15,42 @@ from triblox.config import clr, stub_h, taper_h, wall_w
 from triblox.helper.util import normalize_float, sin30
 from triblox.mosaic.Mosaic import Mosaic
 from triblox.mosaic.PlacedTile import PlacedTile
-
+from typing import Optional
 
 @dataclass(frozen=True)
 class PrismVoid:
     mosaic: Mosaic
     hu: float
+    wall_thick: Optional[float] = None
+    bottom_thick: Optional[float] = None
 
     def __post_init__(self):
         if self.hu <= 0:
             raise ValueError("Height units must be greater than 0")
+        if self.wall_thick is None:
+            object.__setattr__(self, "wall_thick", wall_w)
+        if self.wall_thick <= 0:
+            raise ValueError("Wall thick must be greater than 0")
+        if self.bottom_thick is None:
+            object.__setattr__(self, "bottom_thick", self.wall_thick)
+        if self.bottom_thick < 0:
+            raise ValueError("Bottom thick must be positive or zero")
+
         object.__setattr__(self, "hu", normalize_float(self.hu))
+        object.__setattr__(self, "wall_thick", normalize_float(self.wall_thick))
+        object.__setattr__(self, "bottom_thick", normalize_float(self.bottom_thick))
+
 
     def get(self) -> Workplane:
         result = Workplane("XY")
 
         cache_base = (
-            CacheBase().add_owner(self).add_mosaic(self.mosaic).add("hu", self.hu)
+            CacheBase()
+                .add_owner(self)
+                .add_mosaic(self.mosaic)
+                .add("hu", self.hu)
+                .add("wall_thick", self.wall_thick)
+                .add("bottom_thick", self.bottom_thick)
         )
 
         cached_result = CachedResult(cache_base, result)
@@ -53,7 +72,7 @@ class PrismVoid:
         taper_v = clr + taper_h
         taper_o = taper_v * sin30
         stub_v = stub_h
-        prism_o = clr + wall_w
+        prism_o = clr + self.wall_thick
 
         slope_top_o = taper_o
         back_o = slope_top_o - prism_o
@@ -131,7 +150,7 @@ class PrismVoid:
         v = self._values()
 
         reduce_v = v.taper_v + v.stub_v + v.slope_bottom_v
-        void_h = h(self.hu) - reduce_v - wall_w
+        void_h = h(self.hu) - reduce_v - self.bottom_thick
 
         pprint(void_h)
 
@@ -145,7 +164,7 @@ class PrismVoid:
             Workplane("XY")
             .placeSketch(triangle)
             .extrude(void_h)
-            .translate((0, 0, wall_w))
+            .translate((0, 0, self.bottom_thick))
         )
 
     def _prism_void_null(self, placed_tile: PlacedTile) -> Workplane:
@@ -160,6 +179,6 @@ class PrismVoid:
         return (
             Workplane("XY")
             .placeSketch(triangle)
-            .extrude(h(self.hu) - reduce_v - wall_w)
-            .translate((0, 0, wall_w))
+            .extrude(h(self.hu) - reduce_v - self.bottom_thick)
+            .translate((0, 0, self.bottom_thick))
         )

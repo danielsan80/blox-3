@@ -32,7 +32,7 @@ class BaseVoid:
             result = cached_result.get()
             result = result.union(self._taper_void(placed_tile))
             result = result.union(self._stub_void(placed_tile))
-            cached_result.add(placed_tile)
+            cached_result.add(placed_tile, result)
         result = cached_result.get()
 
         return result
