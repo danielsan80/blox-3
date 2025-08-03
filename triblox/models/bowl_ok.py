@@ -19,9 +19,17 @@ from triblox.block.BaseVoid import BaseVoid
 from triblox.block.BaseHoleVoid import BaseHoleVoid
 from triblox.bowl.Bowl import Bowl
 from triblox.bowl.BowlVoid import BowlVoid
+from triblox.duct.Duct import Duct
 
 
 hu = 1
+top_prism_hu = 0.5
+thick = 3
+
+duct_enter = Tile(0, 0).vertices.c
+duct_exit = Tile(0,-3).vertices.c
+duct_d = 8
+duct_offset = -0.5
 
 mosaic_bottom = (
     Mosaic()
@@ -57,12 +65,20 @@ mosaic_top = (
 )
 
 base = Base(mosaic_bottom)
-base_void = BaseVoid(mosaic_bottom)
+# base_void = BaseVoid(mosaic_bottom)
 bowl = Bowl(mosaic_bottom, mosaic_top,hu)
-bowl_void = BowlVoid(mosaic_bottom=mosaic_bottom, mosaic_top=mosaic_top,hu=hu,wall_thick=wall_w, bottom_thick=wall_w)
-prism = Prism(mosaic_top,hu/2)
-prism_void = PrismVoid(mosaic=mosaic_top, hu=hu/2, wall_thick=wall_w, bottom_thick=0)
-top_void = TopVoid(mosaic_top, hu/2)
+bowl_void = BowlVoid(mosaic_bottom=mosaic_bottom, mosaic_top=mosaic_top,hu=hu,wall_thick=thick, bottom_thick=thick)
+prism = Prism(mosaic_top,top_prism_hu)
+prism_void = PrismVoid(mosaic=mosaic_top, hu=top_prism_hu, wall_thick=thick, bottom_thick=0)
+top_void = TopVoid(mosaic_top, top_prism_hu)
+duct = Duct(
+    duct_enter,
+    h(hu*2),
+    duct_exit,
+    h(hu)+h(top_prism_hu)+duct_offset,
+    duct_d,
+)
+
 
 result = (
     Workplane("XY")
@@ -76,7 +92,8 @@ result = (
         .cut(top_void.get())
         .translate((0, 0, h(hu)))
     )
-    .cut(base_void.get())
+    .cut(duct.get())
+#     .cut(base_void.get())
 )
 
 
